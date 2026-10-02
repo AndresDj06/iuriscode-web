@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# IurisCode
 
-## Getting Started
+**Derecho · Tecnología · Innovación**
 
-First, run the development server:
+Sitio web y portafolio profesional de **IurisCode**, una propuesta LegalTech que une el derecho con la tecnología: investigación jurídica, inteligencia artificial aplicada al derecho, protección de datos y transformación digital.
+
+🌐 **Demo en producción:** [iuriscode.vercel.app](https://iuriscode.vercel.app)
+
+## ✨ Qué incluye
+
+| Sección | Descripción |
+|---|---|
+| **Inicio** | Presentación, propuesta de valor, trabajo destacado y cifras |
+| **Sobre mí** | Perfil profesional y enlaces de contacto |
+| **Investigación** | Publicaciones: artículos, capítulos, tesis y ponencias |
+| **Proyectos** | Proyectos con estado, tecnologías y enlaces |
+| **Eventos** | Congresos, conferencias y seminarios con mi rol (ponente, panelista...) |
+| **Blog** | Artículos con páginas individuales por `slug` |
+| **Contacto** | Formulario con protección anti-spam |
+
+Además: SEO con `sitemap` y `robots` generados, diseño responsive con estilo *glassmorphism* y animaciones de entrada.
+
+## 🛠️ Stack
+
+- **[Next.js 16](https://nextjs.org/)** (App Router) y **React 19**
+- **TypeScript**
+- **Tailwind CSS 4** para estilos
+- **Framer Motion** para animaciones
+- **Supabase** (PostgreSQL) como base de datos
+- **Resend** para el envío de correos del formulario
+- **Cloudflare Turnstile** contra spam
+- **Vercel** para el despliegue
+
+## 🗄️ Base de datos
+
+El esquema está en [`supabase/migrations/001_initial_schema.sql`](supabase/migrations/001_initial_schema.sql) e incluye las tablas `publications`, `projects`, `events` y `blog_posts`. Cada una tiene el campo `published` para controlar qué contenido es público.
+
+## 🚀 Ejecutarlo en local
+
+Requisitos: Node.js 20 o superior.
 
 ```bash
+# 1. Clonar e instalar
+git clone https://github.com/FRANK1808K/iuriscode-web.git
+cd iuriscode-web
+npm install
+
+# 2. Variables de entorno
+cp .env.example .env.local
+# Completa los valores (ver tabla abajo)
+
+# 3. Iniciar el servidor de desarrollo
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Variables de entorno
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Para qué sirve |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Conexión a Supabase |
+| `RESEND_API_KEY` / `CONTACT_EMAIL` | Envío de correos del formulario |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` | Verificación anti-spam |
+| `NEXT_PUBLIC_SITE_URL` | URL base del sitio |
 
-## Learn More
+### Scripts
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run dev     # desarrollo
+npm run build   # build de producción
+npm run start   # servir el build
+npm run lint    # revisar el código con ESLint
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 Estructura
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/          # Rutas (inicio, blog, proyectos, investigación, eventos, contacto)
+├── components/   # layout, secciones de la home y componentes UI reutilizables
+├── config/       # Configuración del sitio y navegación
+├── lib/          # Datos, utilidades y cliente de Supabase
+└── types/        # Tipos de TypeScript
+supabase/
+└── migrations/   # Esquema SQL
+```
 
-## Deploy on Vercel
+## 👤 Autor
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Frank Sebastián Mena** · Estudiante de Derecho, programación, datos e IA · Quibdó, Colombia
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/franksebasti%C3%A1nmena/)

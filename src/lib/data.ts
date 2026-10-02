@@ -122,7 +122,7 @@ Mi visión es democratizar y modernizar la práctica del derecho, transformando 
   ],
   socialLinks: {
     linkedin: "https://www.linkedin.com/in/franksebasti%C3%A1nmena/",
-    github: "#",
+    github: "https://github.com/FRANK1808K",
     email: "frankbt1808@gmail.com",
     whatsapp: "#",
   },
@@ -293,7 +293,7 @@ IurisCode Platform es el ecosistema digital central de la consultora, diseñado 
     ],
     status: "in_progress",
     projectUrl: "https://iuriscode.vercel.app",
-    repositoryUrl: "https://github.com/FRANK1808K/proyecto_web_frank",
+    repositoryUrl: "https://github.com/FRANK1808K/iuriscode-web",
     imageUrl: undefined,
     startDate: "2025-08-01",
     endDate: undefined,

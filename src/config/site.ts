@@ -13,7 +13,7 @@ export const siteConfig = {
   },
   links: {
     linkedin: "https://www.linkedin.com/in/franksebasti%C3%A1nmena/",
-    github: "#", // TODO: Add GitHub URL
+    github: "https://github.com/FRANK1808K",
     whatsapp: "#", // TODO: Add WhatsApp number
     email: "mailto:frankbt1808@gmail.com",
   },
