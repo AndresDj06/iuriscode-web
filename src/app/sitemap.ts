@@ -17,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/blog',
     '/contacto',
   ].map((route) => ({
-    url: `${baseUrl}${route}`,
+    url: route === '' ? `${baseUrl}/` : `${baseUrl}${route}/`,
     lastModified: new Date().toISOString(),
     changeFrequency: 'weekly' as const,
     priority: route === '' ? 1 : 0.8,
@@ -25,7 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Rutas dinámicas de publicaciones
   const publicationRoutes = publicationsData.map((pub) => ({
-    url: `${baseUrl}/investigacion/${pub.slug}`,
+    url: `${baseUrl}/investigacion/${pub.slug}/`,
     lastModified: new Date(pub.updatedAt || pub.publicationDate).toISOString(),
     changeFrequency: 'monthly' as const,
     priority: 0.6,
@@ -33,7 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Rutas dinámicas de proyectos
   const projectRoutes = projectsData.map((project) => ({
-    url: `${baseUrl}/proyectos/${project.slug}`,
+    url: `${baseUrl}/proyectos/${project.slug}/`,
     lastModified: new Date(project.updatedAt || project.startDate).toISOString(),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
@@ -41,7 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Rutas dinámicas de blog
   const blogRoutes = blogPostsData.map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
+    url: `${baseUrl}/blog/${post.slug}/`,
     lastModified: new Date(post.updatedAt || post.publishedAt).toISOString(),
     changeFrequency: 'weekly' as const,
     priority: 0.7,

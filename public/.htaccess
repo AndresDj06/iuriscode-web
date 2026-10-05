@@ -1,0 +1,91 @@
+# ----------------------------------------------------------------------
+# Configuración Apache / LiteSpeed para Next.js en Hostinger
+# ----------------------------------------------------------------------
+
+# 1. Definir los archivos índice predeterminados
+DirectoryIndex index.html index.php
+
+# 2. Desactivar listado de directorios y problemas de negociación MultiViews
+Options -Indexes -MultiViews
+
+# 3. Asegurar permisos de lectura en Apache 2.4 (Previene error 403 Forbidden)
+<IfModule mod_authz_core.c>
+    Require all granted
+</IfModule>
+
+# 4. Asegurar el comportamiento de slash para directorios estáticos
+DirectorySlash On
+
+# 5. Página de error 404 personalizada de Next.js
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Si se accede directamente a un archivo existente, servirlo
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # Si se accede a un directorio existente que contiene index.html, servirlo
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteCond %{REQUEST_FILENAME}/index.html -f
+    RewriteRule ^ - [L]
+
+    # Si se pide /ruta (sin barra) y existe /ruta/index.html, redirigir limpiamente a /ruta/
+    RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+    RewriteRule ^(.*[^/])$ /$1/ [R=301,L]
+
+    # Fallback: Si existe /ruta.html directamente, servirlo
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+    RewriteRule ^(.*)/?$ $1.html [L]
+
+    # Si no existe ni archivo ni directorio, mostrar 404 de Next.js
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ 404.html [L]
+</IfModule>
+
+# ----------------------------------------------------------------------
+# Tipos MIME para Next.js (RSC payloads, fuentes, svg, json)
+# ----------------------------------------------------------------------
+<IfModule mod_mime.c>
+    AddType application/javascript .js .mjs
+    AddType text/css .css
+    AddType image/svg+xml .svg
+    AddType application/json .json
+    AddType font/woff2 .woff2
+    AddType font/woff .woff
+    AddType text/plain .txt
+</IfModule>
+
+# ----------------------------------------------------------------------
+# Caché y optimización
+# ----------------------------------------------------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+    # No cachear HTML para que los cambios se reflejen de inmediato
+    ExpiresByType text/html "access plus 0 seconds"
+    # Archivos estáticos con hash único cachear por 1 año
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+</IfModule>
+
+# Encabezados de control de caché
+<IfModule mod_headers.c>
+    <FilesMatch "\.(html)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires 0
+    </FilesMatch>
+    <FilesMatch "\.(js|css|woff2|woff|png|jpg|jpeg|svg|webp)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>
