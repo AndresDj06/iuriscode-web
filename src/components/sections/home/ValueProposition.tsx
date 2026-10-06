@@ -1,20 +1,26 @@
-import { Reveal } from '@/components/ui/Reveal';
-import SectionHeading from '@/components/ui/SectionHeading';
+import { SectionHeading } from '@/components/ui/SectionHeading';
+import { Reveal, Stagger, StaggerItem } from '@/components/ui/Reveal';
 import { profileData } from '@/lib/data';
 
 export default function ValueProposition() {
   return (
-    <section className="py-24 container mx-auto px-4 sm:px-6 lg:px-8">
-      <SectionHeading eyebrow="ÁREAS" title="En qué trabajo" alignment="center" />
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
-        {profileData.focusAreas.map((area, index) => (
-          <Reveal key={area.title} delay={index * 0.1}>
-            <div className="glass h-full p-6 flex flex-col gap-4">
-              <h3 className="text-lg font-bold text-text-primary">{area.title}</h3>
-              <p className="text-text-muted text-sm leading-relaxed">{area.description}</p>
-            </div>
-          </Reveal>
-        ))}
+    <section aria-labelledby="areas-title" className="border-t border-line">
+      <div className="container-page py-20 sm:py-28">
+        <Reveal>
+          <SectionHeading id="areas-title" eyebrow="Enfoque" title="Áreas de trabajo" className="mb-12 sm:mb-16" />
+        </Reveal>
+
+        <Stagger as="ol" className="grid gap-5 md:grid-cols-3">
+          {profileData.focusAreas.map((area, index) => (
+            <StaggerItem as="li" key={area.title} className="card card-hover flex flex-col gap-4 p-6 sm:p-8">
+              <span aria-hidden="true" className="font-serif text-sm text-accent">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <h3 className="font-serif text-xl font-medium leading-snug">{area.title}</h3>
+              <p className="text-[15px] leading-relaxed text-body">{area.description}</p>
+            </StaggerItem>
+          ))}
+        </Stagger>
       </div>
     </section>
   );

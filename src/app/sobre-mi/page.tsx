@@ -1,52 +1,96 @@
 import type { Metadata } from "next";
+import { MapPin } from "lucide-react";
 import { profileData } from "@/lib/data";
-import { Reveal } from "@/components/ui/Reveal";
+import { Reveal, Stagger, StaggerItem } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Markdown } from "@/components/ui/Markdown";
-import type { TimelineItem } from "@/types";
+import { Portrait } from "@/components/ui/Portrait";
+import { Headline } from "@/components/ui/Headline";
+import { Badge } from "@/components/ui/Badge";
+import { Timeline } from "@/components/sections/about/Timeline";
 
 export const metadata: Metadata = {
   title: "Sobre mí",
-  description: "Biografía, experiencia y educación de Frank Sebastián Mena, estudiante de Derecho en Quibdó.",
+  description:
+    "Biografía, experiencia y educación de Frank Sebastián Mena, estudiante de Derecho en Quibdó, Chocó.",
 };
-
-function Timeline({ items }: { items: TimelineItem[] }) {
-  return (
-    <ol className="flex flex-col gap-6">
-      {items.map((item) => (
-        <li key={`${item.title}-${item.organization}`} className="glass p-6">
-          <h3 className="text-lg font-bold text-text-primary">{item.title}</h3>
-          <p className="font-medium">{item.organization}</p>
-          <p className="text-sm text-text-dim">{item.period}</p>
-          {item.location && <p className="text-sm text-text-dim">{item.location}</p>}
-          {item.description && <p className="mt-2 text-text-muted">{item.description}</p>}
-        </li>
-      ))}
-    </ol>
-  );
-}
 
 export default function AboutPage() {
   return (
-    <div className="pt-24 pb-16">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Reveal className="mb-20 pt-10">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">{profileData.fullName}</h1>
-          <p className="text-xl mb-8">{profileData.headline}</p>
-          <Markdown content={profileData.bio} className="text-lg" />
+    <>
+      {/* Cabecera */}
+      <section className="container-page pb-16 pt-28 sm:pb-20 sm:pt-40">
+        <Reveal className="flex flex-col gap-8 sm:flex-row sm:items-center sm:gap-10">
+          <Portrait eager className="size-28 sm:size-40" />
+          <div>
+            <p className="eyebrow mb-4">Sobre mí</p>
+            <h1 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">
+              {profileData.fullName}
+            </h1>
+            <Headline text={profileData.headline} className="mt-3 text-lg text-body" />
+            <p className="mt-2 flex items-center gap-1.5 text-sm text-mute">
+              <MapPin aria-hidden="true" className="size-4" />
+              {profileData.location}
+            </p>
+          </div>
         </Reveal>
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      {/* Biografía */}
+      <section aria-labelledby="bio-title" className="border-t border-line">
+        <div className="container-page grid gap-8 py-16 sm:py-20 lg:grid-cols-[1fr_2fr] lg:gap-16">
           <Reveal>
-            <SectionHeading title="Experiencia" alignment="left" className="mb-8" />
-            <Timeline items={profileData.experience} />
+            <h2 id="bio-title" className="eyebrow">Biografía</h2>
           </Reveal>
-          <Reveal delay={0.1}>
-            <SectionHeading title="Educación" alignment="left" className="mb-8" />
-            <Timeline items={profileData.education} />
+          <Reveal delay={0.05}>
+            <Markdown content={profileData.bio} className="max-w-prose text-lg" />
           </Reveal>
         </div>
-      </div>
-    </div>
+      </section>
+
+      {/* Trayectoria */}
+      <section aria-labelledby="trayectoria-title" className="border-t border-line">
+        <div className="container-page py-16 sm:py-20">
+          <Reveal>
+            <SectionHeading id="trayectoria-title" eyebrow="Trayectoria" title="Experiencia y educación" className="mb-12" />
+          </Reveal>
+          <div className="grid gap-14 md:grid-cols-2 md:gap-12">
+            <div>
+              <h3 className="mb-8 text-sm font-semibold uppercase tracking-[0.12em] text-mute">
+                Experiencia
+              </h3>
+              <Timeline items={profileData.experience} />
+            </div>
+            <div>
+              <h3 className="mb-8 text-sm font-semibold uppercase tracking-[0.12em] text-mute">Educación</h3>
+              <Timeline items={profileData.education} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Habilidades */}
+      <section aria-labelledby="skills-title" className="border-t border-line">
+        <div className="container-page py-16 sm:py-20">
+          <Reveal>
+            <SectionHeading id="skills-title" eyebrow="Habilidades" title="Derecho, tecnología y gestión" className="mb-12" />
+          </Reveal>
+          <Stagger className="grid gap-10 md:grid-cols-3">
+            {profileData.skills.map((group) => (
+              <StaggerItem key={group.category}>
+                <h3 className="mb-4 font-serif text-lg font-medium">{group.category}</h3>
+                <ul className="flex flex-wrap gap-2">
+                  {group.items.map((skill) => (
+                    <li key={skill}>
+                      <Badge variant="outline">{skill}</Badge>
+                    </li>
+                  ))}
+                </ul>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
+      </section>
+    </>
   );
 }

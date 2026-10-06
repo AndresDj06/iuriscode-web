@@ -16,7 +16,7 @@ export const profileData: Profile = {
   headline: "Estudiante de Derecho | Derechos humanos y tecnología | Python e IA",
   valueStatement: "Traduzco entre el derecho, las comunidades y la tecnología.",
   location: "Quibdó, Chocó, Colombia",
-  avatarUrl: "/images/profile.jpg",
+  avatarUrl: "/images/profile.webp",
   bio: `Soy estudiante de Derecho en la **Universidad Tecnológica del Chocó**, en Quibdó. Me interesa el punto donde se cruzan los derechos humanos, los derechos de los pueblos étnicos y el ambiente, y la tecnología.
 
 Desde enero de 2025 soy **asistente de investigación** en la Universidad Tecnológica del Chocó y, desde febrero de 2026, **aprendiz en la Fundación A+**, donde apoyo la gestión de proyectos y la labor directiva.

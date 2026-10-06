@@ -2,6 +2,8 @@ import { cn } from '@/lib/utils';
 
 export interface SectionHeadingProps {
   title: string;
+  /** id del título, para aria-labelledby de la sección. */
+  id?: string;
   subtitle?: string;
   eyebrow?: string;
   /** h1 en la cabecera de cada página; h2 en las secciones. */
@@ -12,6 +14,7 @@ export interface SectionHeadingProps {
 
 export function SectionHeading({
   title,
+  id,
   subtitle,
   eyebrow,
   as: Heading = 'h2',
@@ -28,6 +31,7 @@ export function SectionHeading({
     >
       {eyebrow && <p className="eyebrow">{eyebrow}</p>}
       <Heading
+        id={id}
         className={cn(
           'font-serif font-medium tracking-tight text-ink',
           Heading === 'h1' ? 'text-4xl sm:text-5xl' : 'text-3xl sm:text-4xl',
