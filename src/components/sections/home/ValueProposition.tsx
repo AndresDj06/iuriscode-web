@@ -10,7 +10,7 @@ export default function ValueProposition() {
           <SectionHeading id="areas-title" eyebrow="Enfoque" title="Áreas de trabajo" className="mb-12 sm:mb-16" />
         </Reveal>
 
-        <Stagger as="ol" className="grid gap-5 md:grid-cols-3">
+        <Stagger as="ol" className="grid gap-5 lg:grid-cols-3">
           {profileData.focusAreas.map((area, index) => (
             <StaggerItem as="li" key={area.title} className="card card-hover flex flex-col gap-4 p-6 sm:p-8">
               <span aria-hidden="true" className="font-serif text-sm text-accent">

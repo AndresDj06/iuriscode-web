@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { MapPin } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, MapPin } from "lucide-react";
 import { profileData } from "@/lib/data";
 import { Reveal, Stagger, StaggerItem } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -64,6 +65,13 @@ export default function AboutPage() {
             <div>
               <h3 className="mb-8 text-sm font-semibold uppercase tracking-[0.12em] text-mute">Educación</h3>
               <Timeline items={profileData.education} />
+              <Link
+                href="/formacion"
+                className="group mt-10 inline-flex items-center gap-2 text-sm font-medium text-accent"
+              >
+                <span className="link-underline">Ver formación y certificaciones</span>
+                <ArrowRight aria-hidden="true" className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
             </div>
           </div>
         </div>

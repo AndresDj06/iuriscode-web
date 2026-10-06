@@ -44,7 +44,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.25, ease: EASE }}
-          className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto bg-canvas md:hidden"
+          className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto bg-canvas lg:hidden"
         >
           <nav aria-label="Principal (móvil)" className="container-page py-6">
             <motion.ul

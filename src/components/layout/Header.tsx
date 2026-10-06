@@ -52,7 +52,7 @@ export default function Header() {
             {siteConfig.name}
           </Link>
 
-          <nav aria-label="Principal" className="hidden md:block">
+          <nav aria-label="Principal" className="hidden lg:block">
             <ul className="flex items-center gap-7">
               {navigationItems.map((item) => {
                 const active = isActivePath(pathname, item.href)
@@ -77,7 +77,7 @@ export default function Header() {
           <button
             ref={toggleRef}
             type="button"
-            className="-mr-2 rounded-md p-2 text-ink md:hidden"
+            className="-mr-2 rounded-md p-2 text-ink lg:hidden"
             onClick={() => setIsMenuOpen((open) => !open)}
             aria-expanded={isMenuOpen}
             aria-controls="mobile-menu"

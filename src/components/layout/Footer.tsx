@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { footerItems } from '@/config/navigation'
 import { siteConfig } from '@/config/site'
+import { Headline } from '@/components/ui/Headline'
 
 const contactLinks = [
   { label: siteConfig.author.email, href: siteConfig.links.email },
@@ -14,12 +15,12 @@ export function Footer() {
 
   return (
     <footer className="border-t border-line bg-surface">
-      <div className="container-page grid gap-10 py-14 md:grid-cols-[1.5fr_1fr_1fr]">
-        <div className="flex flex-col gap-3">
+      <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
+        <div className="flex flex-col gap-3 sm:col-span-2 lg:col-span-1">
           <Link href="/" className="w-fit font-serif text-xl font-medium text-ink">
             {siteConfig.name}
           </Link>
-          <p className="max-w-sm text-sm text-body">{siteConfig.author.headline}</p>
+          <Headline stacked text={siteConfig.author.headline} className="text-sm text-body" />
           <p className="text-sm text-mute">{siteConfig.author.location}</p>
         </div>
 
@@ -45,7 +46,7 @@ export function Footer() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="link-underline break-all text-sm text-body hover:text-ink"
+                    className="link-underline text-sm text-body hover:text-ink"
                     {...(newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                   >
                     {link.label}
