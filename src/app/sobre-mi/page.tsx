@@ -1,124 +1,106 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
+import Link from "next/link";
+import { ArrowRight, MapPin } from "lucide-react";
 import { profileData } from "@/lib/data";
-import { AnimatedSection } from "@/components/ui/AnimatedSection";
+import { Reveal, Stagger, StaggerItem } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { GlassCard } from "@/components/ui/GlassCard";
+import { Markdown } from "@/components/ui/Markdown";
+import { Portrait } from "@/components/ui/Portrait";
+import { Headline } from "@/components/ui/Headline";
 import { Badge } from "@/components/ui/Badge";
-import { LinkedInIcon, GitHubIcon, WhatsAppIcon } from "@/components/ui/SocialIcons";
-import { Mail } from "lucide-react";
+import { Timeline } from "@/components/sections/about/Timeline";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Sobre mí",
+  description:
+    "Biografía, experiencia y educación de Frank Sebastián Mena, estudiante de Derecho en Quibdó, Chocó.",
+  path: "/sobre-mi/",
+});
 
 export default function AboutPage() {
   return (
-    <div className="pt-24 pb-16 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Hero Profile Section */}
-        <AnimatedSection className="mb-20 pt-10" direction="up">
-          <div className="flex flex-col md:flex-row gap-10 items-start">
-            <div className="w-full md:w-1/3 flex flex-col gap-6">
-              <div className="aspect-square rounded-2xl bg-surface border border-border overflow-hidden relative flex items-center justify-center">
-                {profileData.avatarUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={profileData.avatarUrl} alt={profileData.fullName} className="object-cover w-full h-full" />
-                ) : (
-                  <div className="text-6xl text-primary-light font-bold">
-                    {profileData.fullName.split(' ').map(n => n[0]).join('')}
-                  </div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
-              </div>
-              
-              <div className="flex gap-4 justify-center md:justify-start">
-                <a href={profileData.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="p-3 glass rounded-full hover:text-accent-cyan transition-colors">
-                  <LinkedInIcon size={20} />
-                </a>
-                <a href={profileData.socialLinks.github} target="_blank" rel="noopener noreferrer" className="p-3 glass rounded-full hover:text-accent-cyan transition-colors">
-                  <GitHubIcon size={20} />
-                </a>
-                <a href={profileData.socialLinks.whatsapp} target="_blank" rel="noopener noreferrer" className="p-3 glass rounded-full hover:text-accent-cyan transition-colors">
-                  <WhatsAppIcon size={20} />
-                </a>
-                <a href={`mailto:${profileData.socialLinks.email}`} className="p-3 glass rounded-full hover:text-accent-cyan transition-colors">
-                  <Mail size={20} />
-                </a>
-              </div>
-            </div>
-            
-            <div className="w-full md:w-2/3">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">{profileData.fullName}</h1>
-              <p className="text-gradient text-xl md:text-2xl font-medium mb-6">{profileData.title}</p>
-              <div className="prose prose-invert prose-p:text-text-muted prose-headings:text-text-primary max-w-none">
-                {/* For MVP, rendering plain text extended bio. Future: use React Markdown */}
-                <div className="text-text-muted text-lg leading-relaxed space-y-4 whitespace-pre-wrap">
-                  {profileData.bioExtended.replace(/##/g, '').replace(/>/g, '')}
-                </div>
-              </div>
-            </div>
+    <>
+      {/* Cabecera */}
+      <section className="container-page pb-16 pt-28 sm:pb-20 sm:pt-40">
+        <div className="animate-rise flex flex-col gap-8 sm:flex-row sm:items-center sm:gap-10">
+          <Portrait eager className="size-28 sm:size-40" />
+          <div>
+            <p className="eyebrow mb-4">Sobre mí</p>
+            <h1 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">
+              {profileData.fullName}
+            </h1>
+            <Headline text={profileData.headline} className="mt-3 text-lg text-body" />
+            <p className="mt-2 flex items-center gap-1.5 text-sm text-mute">
+              <MapPin aria-hidden="true" className="size-4" />
+              {profileData.location}
+            </p>
           </div>
-        </AnimatedSection>
-
-        {/* Experience & Education */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
-          <AnimatedSection direction="up" delay={0.1}>
-            <SectionHeading title="Experiencia" alignment="left" className="mb-8" />
-            <div className="flex flex-col gap-6">
-              {profileData.experience.map((exp, index) => (
-                <GlassCard key={index} className="relative pl-8">
-                  <div className="absolute left-0 top-6 bottom-0 w-px bg-border ml-[11px]"></div>
-                  <div className="absolute left-0 top-6 w-[24px] h-[24px] rounded-full bg-surface border-2 border-accent-cyan flex items-center justify-center -translate-x-0">
-                    <div className="w-2 h-2 rounded-full bg-accent-cyan"></div>
-                  </div>
-                  <div className="ml-4">
-                    <h3 className="text-xl font-bold text-text-primary">{exp.role}</h3>
-                    <p className="text-accent-violet font-medium">{exp.organization}</p>
-                    <p className="text-sm text-text-dim mb-3">{exp.period}</p>
-                    {exp.description && <p className="text-text-muted">{exp.description}</p>}
-                  </div>
-                </GlassCard>
-              ))}
-            </div>
-          </AnimatedSection>
-
-          <AnimatedSection direction="up" delay={0.2}>
-            <SectionHeading title="Educación" alignment="left" className="mb-8" />
-            <div className="flex flex-col gap-6">
-              {profileData.education.map((edu, index) => (
-                <GlassCard key={index} className="relative pl-8">
-                  <div className="absolute left-0 top-6 bottom-0 w-px bg-border ml-[11px]"></div>
-                  <div className="absolute left-0 top-6 w-[24px] h-[24px] rounded-full bg-surface border-2 border-accent-violet flex items-center justify-center -translate-x-0">
-                    <div className="w-2 h-2 rounded-full bg-accent-violet"></div>
-                  </div>
-                  <div className="ml-4">
-                    <h3 className="text-xl font-bold text-text-primary">{edu.degree}</h3>
-                    <p className="text-accent-cyan font-medium">{edu.institution}</p>
-                    <p className="text-sm text-text-dim mb-3">{edu.year}</p>
-                    {edu.description && <p className="text-text-muted">{edu.description}</p>}
-                  </div>
-                </GlassCard>
-              ))}
-            </div>
-          </AnimatedSection>
         </div>
+      </section>
 
-        {/* Skills */}
-        <AnimatedSection direction="up" className="mb-20">
-          <SectionHeading title="Competencias y Habilidades" alignment="center" className="mb-12" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {profileData.skills.map((skillGroup, index) => (
-              <GlassCard key={index} hover>
-                <h3 className="text-lg font-bold text-text-primary mb-4 text-center">{skillGroup.category}</h3>
-                <div className="flex flex-wrap gap-2 justify-center">
-                  {skillGroup.items.map((skill, i) => (
-                    <Badge key={i} variant="outline" className="text-xs">
-                      {skill}
-                    </Badge>
-                  ))}
-                </div>
-              </GlassCard>
-            ))}
+      {/* Biografía */}
+      <section aria-labelledby="bio-title" className="border-t border-line">
+        <div className="container-page grid gap-8 py-16 sm:py-20 lg:grid-cols-[1fr_2fr] lg:gap-16">
+          <Reveal>
+            <h2 id="bio-title" className="eyebrow">Biografía</h2>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <Markdown content={profileData.bio} className="max-w-prose text-lg" />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Trayectoria */}
+      <section aria-labelledby="trayectoria-title" className="border-t border-line">
+        <div className="container-page py-16 sm:py-20">
+          <Reveal>
+            <SectionHeading id="trayectoria-title" eyebrow="Trayectoria" title="Experiencia y educación" className="mb-12" />
+          </Reveal>
+          <div className="grid gap-14 md:grid-cols-2 md:gap-12">
+            <div>
+              <h3 className="mb-8 text-sm font-semibold uppercase tracking-[0.12em] text-mute">
+                Experiencia
+              </h3>
+              <Timeline items={profileData.experience} />
+            </div>
+            <div>
+              <h3 className="mb-8 text-sm font-semibold uppercase tracking-[0.12em] text-mute">Educación</h3>
+              <Timeline items={profileData.education} />
+              <Link
+                href="/formacion"
+                className="group mt-10 inline-flex items-center gap-2 text-sm font-medium text-accent"
+              >
+                <span className="link-underline">Ver formación y certificaciones</span>
+                <ArrowRight aria-hidden="true" className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+            </div>
           </div>
-        </AnimatedSection>
+        </div>
+      </section>
 
-      </div>
-    </div>
+      {/* Habilidades */}
+      <section aria-labelledby="skills-title" className="border-t border-line">
+        <div className="container-page py-16 sm:py-20">
+          <Reveal>
+            <SectionHeading id="skills-title" eyebrow="Habilidades" title="Derecho, tecnología y gestión" className="mb-12" />
+          </Reveal>
+          <Stagger className="grid gap-10 md:grid-cols-3">
+            {profileData.skills.map((group) => (
+              <StaggerItem key={group.category}>
+                <h3 className="mb-4 font-serif text-lg font-medium">{group.category}</h3>
+                <ul className="flex flex-wrap gap-2">
+                  {group.items.map((skill) => (
+                    <li key={skill}>
+                      <Badge variant="outline">{skill}</Badge>
+                    </li>
+                  ))}
+                </ul>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
+      </section>
+    </>
   );
 }

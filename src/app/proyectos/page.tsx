@@ -1,72 +1,96 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
+import { Check } from "lucide-react";
 import { projectsData } from "@/lib/data";
-import { AnimatedSection } from "@/components/ui/AnimatedSection";
+import { Reveal, Stagger, StaggerItem } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { GlassCard } from "@/components/ui/GlassCard";
 import { Badge } from "@/components/ui/Badge";
-import Link from "next/link";
-import { FolderKanban } from "lucide-react";
+import { ButtonLink } from "@/components/ui/Button";
+import { GitHubIcon } from "@/components/ui/SocialIcons";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Proyectos",
+  description:
+    "Proyectos personales de Frank Sebastián Mena: este sitio web, construido con Next.js, React y TypeScript.",
+  path: "/proyectos/",
+});
 
 export default function ProjectsPage() {
-  const publishedProjects = projectsData.filter(p => p.published);
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "completed": return <Badge variant="success">Completado</Badge>;
-      case "in_progress": return <Badge variant="violet">En Curso</Badge>;
-      case "planned": return <Badge variant="default">Planificado</Badge>;
-      default: return null;
-    }
-  };
-
   return (
-    <div className="pt-24 pb-16 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <AnimatedSection className="mb-16">
-          <SectionHeading 
-            title="Proyectos y Casos" 
-            subtitle="Explora las iniciativas de innovación tecnológica y legal que he desarrollado o en las que estoy trabajando actualmente."
-            accentText="PORTAFOLIO"
+    <>
+      <section className="container-page pb-14 pt-28 sm:pb-16 sm:pt-40">
+        <div className="animate-rise">
+          <SectionHeading
+            as="h1"
+            eyebrow="Proyectos"
+            title="Proyectos"
+            subtitle="Lo que construyo para unir el derecho con la tecnología."
           />
-        </AnimatedSection>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {publishedProjects.map((project, index) => (
-            <AnimatedSection key={project.id} delay={index * 0.1} direction="up">
-              <Link href={`/proyectos/${project.slug}`} className="block h-full">
-                <GlassCard hover className="h-full flex flex-col p-8">
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="p-3 rounded-xl bg-surface border border-border">
-                      <FolderKanban size={28} className="text-accent-cyan" />
-                    </div>
-                    {getStatusBadge(project.status)}
-                  </div>
-                  
-                  <h3 className="text-2xl font-bold text-text-primary mb-3">
-                    {project.title}
-                  </h3>
-                  
-                  <p className="text-text-muted mb-8 flex-grow">
-                    {project.description}
-                  </p>
-                  
-                  <div className="mt-auto">
-                    <h4 className="text-sm font-medium text-text-dim uppercase tracking-wider mb-3">Stack Tecnológico</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {project.technologies.map(tech => (
-                        <Badge key={tech} variant="outline" className="border-accent-cyan/30 text-accent-cyan bg-accent-cyan/5">
-                          {tech}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </GlassCard>
-              </Link>
-            </AnimatedSection>
-          ))}
         </div>
+      </section>
 
-      </div>
-    </div>
+      {projectsData.map((project, index) => {
+        const titleId = `project-${index}-title`;
+        return (
+          <section key={project.title} aria-labelledby={titleId} className="border-t border-line">
+            <div className="container-page py-16 sm:py-20">
+              <Reveal className="max-w-3xl">
+                <Badge variant="accent">{project.status}</Badge>
+                <h2 id={titleId} className="mt-4 font-serif text-3xl font-medium tracking-tight sm:text-4xl">
+                  {project.title}
+                </h2>
+                <p className="mt-4 text-lg leading-relaxed text-body">{project.summary}</p>
+              </Reveal>
+
+              <div className="mt-12 grid gap-10 lg:grid-cols-3 lg:gap-12">
+                <Reveal>
+                  <h3 className="eyebrow mb-4">Problema</h3>
+                  <p className="leading-relaxed text-body">{project.problem}</p>
+                </Reveal>
+
+                <Reveal delay={0.06}>
+                  <h3 className="eyebrow mb-4">Qué incluye</h3>
+                  <Stagger as="ul" className="flex flex-col gap-3">
+                    {project.highlights.map((item) => (
+                      <StaggerItem as="li" key={item} className="flex gap-3 leading-relaxed text-body">
+                        <Check aria-hidden="true" className="mt-1 size-4 shrink-0 text-accent" />
+                        {item}
+                      </StaggerItem>
+                    ))}
+                  </Stagger>
+                </Reveal>
+
+                <Reveal delay={0.12}>
+                  <h3 className="eyebrow mb-4">Stack</h3>
+                  <ul className="flex flex-wrap gap-2">
+                    {project.stack.map((tech) => (
+                      <li key={tech}>
+                        <Badge variant="outline">{tech}</Badge>
+                      </li>
+                    ))}
+                  </ul>
+                </Reveal>
+              </div>
+
+              {(project.repositoryUrl || project.liveUrl) && (
+                <Reveal className="mt-12 flex flex-col gap-3 border-t border-line pt-8 sm:flex-row">
+                  {project.liveUrl && (
+                    <ButtonLink href={project.liveUrl} size="lg" arrow>
+                      Ver el sitio
+                    </ButtonLink>
+                  )}
+                  {project.repositoryUrl && (
+                    <ButtonLink href={project.repositoryUrl} variant="secondary" size="lg">
+                      <GitHubIcon size={18} />
+                      Ver el repositorio
+                    </ButtonLink>
+                  )}
+                </Reveal>
+              )}
+            </div>
+          </section>
+        );
+      })}
+    </>
   );
 }

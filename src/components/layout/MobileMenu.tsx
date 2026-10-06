@@ -4,37 +4,33 @@ import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Mail } from 'lucide-react'
-import { LinkedInIcon, GitHubIcon } from '@/components/ui/SocialIcons'
 import { navigationItems } from '@/config/navigation'
 import { siteConfig } from '@/config/site'
-import { cn } from '@/lib/utils'
+import { cn, isActivePath } from '@/lib/utils'
 
 interface MobileMenuProps {
   isOpen: boolean
   onClose: () => void
 }
 
+const EASE = [0.22, 1, 0.36, 1] as const
+
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const pathname = usePathname()
-  const menuRef = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
 
-  // Trap focus & close on Escape
+  // Escape para cerrar, bloqueo de scroll y foco en el primer enlace
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    if (!isOpen) return
+    const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
-    
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-      document.addEventListener('keydown', handleKeyDown)
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-
+    document.body.style.overflow = 'hidden'
+    document.addEventListener('keydown', onKeyDown)
+    panelRef.current?.querySelector<HTMLAnchorElement>('a')?.focus()
     return () => {
-      document.body.style.overflow = 'unset'
-      document.removeEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = ''
+      document.removeEventListener('keydown', onKeyDown)
     }
   }, [isOpen, onClose])
 
@@ -42,93 +38,62 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          initial={{ x: '100%' }}
-          animate={{ x: 0 }}
-          exit={{ x: '100%' }}
-          transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-          className="fixed inset-0 z-[60] bg-background/95 backdrop-blur-xl md:hidden"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Menu de navegación"
+          id="mobile-menu"
+          ref={panelRef}
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.25, ease: EASE }}
+          className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto bg-canvas lg:hidden"
         >
-          <div className="flex flex-col h-full" ref={menuRef}>
-            <div className="flex items-center justify-between p-4 sm:px-6">
-              <Link href="/" className="flex items-center gap-1" onClick={onClose} id="mobile-menu-logo">
-                <span className="text-xl font-bold text-text-primary">Iuris</span>
-                <span className="text-xl font-bold text-accent-cyan">Code</span>
-              </Link>
-              <button
-                id="mobile-menu-close"
-                onClick={onClose}
-                className="p-2 text-text-muted hover:text-text-primary transition-colors"
-                aria-label="Close menu"
+          <nav aria-label="Principal (móvil)" className="container-page py-6">
+            <motion.ul
+              className="flex flex-col"
+              initial="hidden"
+              animate="visible"
+              variants={{ visible: { transition: { staggerChildren: 0.04, delayChildren: 0.05 } } }}
+            >
+              {navigationItems.map((item) => {
+                const active = isActivePath(pathname, item.href)
+                return (
+                  <motion.li
+                    key={item.href}
+                    variants={{
+                      hidden: { opacity: 0, y: 8 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: EASE } },
+                    }}
+                    className="border-b border-line"
+                  >
+                    <Link
+                      href={item.href}
+                      onClick={onClose}
+                      aria-current={active ? 'page' : undefined}
+                      className={cn(
+                        'flex items-center justify-between py-4 font-serif text-2xl',
+                        active ? 'text-accent' : 'text-ink',
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.li>
+                )
+              })}
+            </motion.ul>
+
+            <div className="mt-8 flex flex-col gap-3 text-sm">
+              <a href={siteConfig.links.email} className="link-underline w-fit text-body">
+                {siteConfig.author.email}
+              </a>
+              <a
+                href={siteConfig.links.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-underline w-fit text-body"
               >
-                <X size={24} />
-              </button>
+                LinkedIn
+              </a>
             </div>
-
-            <nav className="flex-1 px-6 py-8 overflow-y-auto">
-              <ul className="flex flex-col gap-6">
-                {navigationItems.map((item) => {
-                  const Icon = item.icon
-                  const isActive = pathname === item.href
-                  
-                  return (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        id={`mobile-nav-link-${item.href.replace('/', '') || 'home'}`}
-                        onClick={onClose}
-                        className={cn(
-                          "flex items-center gap-4 text-lg font-medium transition-colors p-3 rounded-xl",
-                          isActive 
-                            ? "text-accent-cyan bg-surface/50 border-l-2 border-accent-cyan" 
-                            : "text-text-muted hover:text-text-primary hover:bg-surface/30"
-                        )}
-                      >
-                        {Icon && <Icon size={24} />}
-                        {item.label}
-                      </Link>
-                    </li>
-                  )
-                })}
-              </ul>
-            </nav>
-
-            <div className="p-6 border-t border-border">
-              <p className="text-sm font-medium text-text-muted mb-4">Conecta con nosotros</p>
-              <div className="flex gap-4">
-                <a 
-                  href={siteConfig.links.linkedin} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-full bg-surface text-text-muted hover:text-accent-cyan transition-colors"
-                  aria-label="LinkedIn"
-                  id="mobile-menu-linkedin"
-                >
-                  <LinkedInIcon size={20} />
-                </a>
-                <a 
-                  href={siteConfig.links.github} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-full bg-surface text-text-muted hover:text-accent-cyan transition-colors"
-                  aria-label="GitHub"
-                  id="mobile-menu-github"
-                >
-                  <GitHubIcon size={20} />
-                </a>
-                <a 
-                  href={siteConfig.links.email} 
-                  className="p-2 rounded-full bg-surface text-text-muted hover:text-accent-cyan transition-colors"
-                  aria-label="Email"
-                  id="mobile-menu-email"
-                >
-                  <Mail size={20} />
-                </a>
-              </div>
-            </div>
-          </div>
+          </nav>
         </motion.div>
       )}
     </AnimatePresence>

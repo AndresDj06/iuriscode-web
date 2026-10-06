@@ -1,129 +1,130 @@
-'use client';
-
-import { AnimatedSection } from "@/components/ui/AnimatedSection";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { GlassCard } from "@/components/ui/GlassCard";
-import { Input, Textarea } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
+import type { ReactNode } from "react";
+import { Mail, MapPin } from "lucide-react";
 import { siteConfig } from "@/config/site";
-import { profileData } from "@/lib/data";
-import { Mail, MapPin, Phone, MessageCircle } from "lucide-react";
-import { LinkedInIcon, GitHubIcon, WhatsAppIcon } from "@/components/ui/SocialIcons";
+import { Reveal } from "@/components/ui/Reveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { GitHubIcon, LinkedInIcon, WhatsAppIcon } from "@/components/ui/SocialIcons";
+import ContactForm from "@/components/sections/contacto/ContactForm";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Contacto",
+  description:
+    `Escríbele a ${siteConfig.author.name} por correo o WhatsApp. ${siteConfig.author.location}.`,
+  path: "/contacto/",
+});
+
+interface ChannelProps {
+  icon: ReactNode;
+  label: string;
+  value: string;
+  href?: string;
+}
+
+function Channel({ icon, label, value, href }: ChannelProps) {
+  const content = (
+    <>
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent">
+        {icon}
+      </span>
+      <span className="flex flex-col">
+        <span className="text-sm text-mute">{label}</span>
+        <span className={href ? "link-underline w-fit text-ink" : "text-ink"}>{value}</span>
+      </span>
+    </>
+  );
+
+  if (!href) return <div className="flex items-center gap-4">{content}</div>;
+  const newTab = href.startsWith("http");
+  return (
+    <a
+      href={href}
+      className="flex items-center gap-4"
+      {...(newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+    >
+      {content}
+    </a>
+  );
+}
 
 export default function ContactPage() {
   return (
-    <div className="pt-24 pb-16 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <AnimatedSection className="mb-16">
-          <SectionHeading 
-            title="Ponte en Contacto" 
-            subtitle="¿Interesado en consultoría LegalTech, colaboración académica o desarrollo de proyectos? Hablemos."
-            accentText="CONTACTO"
+    <>
+      <section className="container-page pb-14 pt-28 sm:pb-16 sm:pt-40">
+        <div className="animate-rise">
+          <SectionHeading
+            as="h1"
+            eyebrow="Contacto"
+            title="Hablemos"
+            subtitle="Escríbeme sobre derechos humanos, investigación jurídica o tecnología."
           />
-        </AnimatedSection>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20">
-          {/* Contact Information */}
-          <AnimatedSection direction="left">
-            <h3 className="text-2xl font-bold text-text-primary mb-6">Información de Contacto</h3>
-            <p className="text-text-muted mb-8 leading-relaxed">
-              Estoy disponible para proyectos de consultoría, desarrollo LegalTech, charlas y conferencias, o investigaciones conjuntas. 
-              Puedes usar el formulario para enviarme un mensaje directo o contactarme a través de cualquiera de los siguientes medios.
-            </p>
-
-            <div className="flex flex-col gap-6 mb-10">
-              <a href={`mailto:${siteConfig.links.email}`} className="flex items-start gap-4 p-4 rounded-xl hover:bg-surface/50 transition-colors border border-transparent hover:border-border">
-                <div className="p-3 bg-surface border border-border rounded-lg text-accent-cyan">
-                  <Mail size={24} />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-text-primary">Email</h4>
-                  <p className="text-text-muted">{siteConfig.links.email}</p>
-                </div>
-              </a>
-
-              <a href={siteConfig.links.whatsapp} target="_blank" rel="noopener noreferrer" className="flex items-start gap-4 p-4 rounded-xl hover:bg-surface/50 transition-colors border border-transparent hover:border-border">
-                <div className="p-3 bg-surface border border-border rounded-lg text-success">
-                  <MessageCircle size={24} />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-text-primary">WhatsApp</h4>
-                  <p className="text-text-muted">Mensaje Directo</p>
-                </div>
-              </a>
-              
-              <div className="flex items-start gap-4 p-4 rounded-xl border border-transparent">
-                <div className="p-3 bg-surface border border-border rounded-lg text-accent-violet">
-                  <MapPin size={24} />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-text-primary">Ubicación</h4>
-                  <p className="text-text-muted">Disponible para trabajo remoto global</p>
-                </div>
-              </div>
-            </div>
-
-            <h4 className="font-semibold text-text-primary mb-4">Redes Profesionales</h4>
-            <div className="flex gap-4">
-              <a href={siteConfig.links.linkedin} target="_blank" rel="noopener noreferrer" className="p-4 glass rounded-xl hover:text-accent-cyan hover:border-accent-cyan/30 transition-all">
-                <LinkedInIcon size={24} />
-              </a>
-              <a href={siteConfig.links.github} target="_blank" rel="noopener noreferrer" className="p-4 glass rounded-xl hover:text-accent-cyan hover:border-accent-cyan/30 transition-all">
-                <GitHubIcon size={24} />
-              </a>
-            </div>
-          </AnimatedSection>
-
-          {/* Contact Form */}
-          <AnimatedSection direction="up" delay={0.2}>
-            <GlassCard className="p-8">
-              <h3 className="text-2xl font-bold text-text-primary mb-6">Envíame un mensaje</h3>
-              <form className="flex flex-col gap-6" action="https://formspree.io/f/example" method="POST">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <Input 
-                    label="Nombre completo" 
-                    id="name" 
-                    name="name" 
-                    placeholder="Tu nombre" 
-                    required 
-                  />
-                  <Input 
-                    label="Email" 
-                    id="email" 
-                    type="email" 
-                    name="email" 
-                    placeholder="tu@email.com" 
-                    required 
-                  />
-                </div>
-                
-                <Input 
-                  label="Asunto" 
-                  id="subject" 
-                  name="subject" 
-                  placeholder="¿En qué te puedo ayudar?" 
-                  required 
-                />
-                
-                <Textarea 
-                  label="Mensaje" 
-                  id="message" 
-                  name="message" 
-                  placeholder="Cuéntame sobre tu proyecto o consulta..." 
-                  rows={5} 
-                  required 
-                />
-                
-                <Button type="button" variant="primary" size="lg" className="w-full mt-2" onClick={() => alert('El formulario en el MVP es de demostración. Configura Supabase o Formspree para envíos reales.')}>
-                  Enviar Mensaje
-                </Button>
-              </form>
-            </GlassCard>
-          </AnimatedSection>
         </div>
+      </section>
 
-      </div>
-    </div>
+      <section aria-label="Formulario y datos de contacto" className="border-t border-line">
+        <div className="container-page grid gap-14 py-16 sm:py-20 lg:grid-cols-[1fr_1.6fr] lg:gap-20">
+          <Reveal>
+            <h2 className="eyebrow mb-8">Directo</h2>
+            <ul className="flex flex-col gap-6">
+              <li>
+                <Channel
+                  icon={<Mail aria-hidden="true" className="size-4" />}
+                  label="Correo"
+                  value={siteConfig.author.email}
+                  href={siteConfig.links.email}
+                />
+              </li>
+              <li>
+                <Channel
+                  icon={<WhatsAppIcon size={16} />}
+                  label="WhatsApp"
+                  value={siteConfig.author.phoneDisplay}
+                  href={siteConfig.links.whatsapp}
+                />
+              </li>
+              <li>
+                <Channel
+                  icon={<MapPin aria-hidden="true" className="size-4" />}
+                  label="Ubicación"
+                  value={siteConfig.author.location}
+                />
+              </li>
+            </ul>
+
+            <h2 className="eyebrow mb-5 mt-12">Redes</h2>
+            <ul className="flex gap-3">
+              <li>
+                <a
+                  href={siteConfig.links.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn (se abre en otra pestaña)"
+                  className="flex size-11 items-center justify-center rounded-full border border-line text-body transition-colors duration-200 hover:border-ink hover:text-ink"
+                >
+                  <LinkedInIcon size={18} />
+                </a>
+              </li>
+              <li>
+                <a
+                  href={siteConfig.links.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub (se abre en otra pestaña)"
+                  className="flex size-11 items-center justify-center rounded-full border border-line text-body transition-colors duration-200 hover:border-ink hover:text-ink"
+                >
+                  <GitHubIcon size={18} />
+                </a>
+              </li>
+            </ul>
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <h2 className="eyebrow mb-8">Escríbeme</h2>
+            <ContactForm />
+          </Reveal>
+        </div>
+      </section>
+    </>
   );
 }

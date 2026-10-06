@@ -1,93 +1,104 @@
-# IurisCode
+# Frank Sebastián Mena · sitio personal
 
-**Derecho · Tecnología · Innovación**
+Sitio web personal de **Frank Sebastián Mena**, estudiante de Derecho en Quibdó (Chocó, Colombia).
+Reúne su perfil, su formación, su investigación y un canal de contacto.
 
-Sitio web y portafolio profesional de **IurisCode**, una propuesta LegalTech que une el derecho con la tecnología: investigación jurídica, inteligencia artificial aplicada al derecho, protección de datos y transformación digital.
+> «Traduzco entre el derecho, las comunidades y la tecnología.»
 
-🌐 **Demo en producción:** [iuriscode.vercel.app](https://iuriscode.vercel.app)
+Es un proyecto personal en desarrollo. Todo el contenido proviene de datos verificados (perfil de LinkedIn y publicaciones); el sitio no incluye información de relleno.
 
-## ✨ Qué incluye
+## Secciones
 
-| Sección | Descripción |
+| Ruta | Contenido |
 |---|---|
-| **Inicio** | Presentación, propuesta de valor, trabajo destacado y cifras |
-| **Sobre mí** | Perfil profesional y enlaces de contacto |
-| **Investigación** | Publicaciones: artículos, capítulos, tesis y ponencias |
-| **Proyectos** | Proyectos con estado, tecnologías y enlaces |
-| **Eventos** | Congresos, conferencias y seminarios con mi rol (ponente, panelista...) |
-| **Blog** | Artículos con páginas individuales por `slug` |
-| **Contacto** | Formulario con protección anti-spam |
+| `/` | Frase de valor, áreas de trabajo y cargos actuales |
+| `/sobre-mi/` | Biografía, experiencia, educación y habilidades |
+| `/formacion/` | Programas, certificaciones y cursos (OEA, Harvard, UdeA, U. de Cartagena, UNESCO, ICON·S, SENA, UTCH) |
+| `/investigacion/` | Capítulo «¿Quién decide los derechos de la naturaleza?» (Pireo Editorial, 2026), en coautoría con Lisneider Hinestroza Cuesta y Nelsy Moreno Ibargüen |
+| `/proyectos/` | Este sitio como caso: problema, alcance y stack |
+| `/blog/` | Próximamente (no indexado mientras no haya artículos) |
+| `/contacto/` | Formulario que abre el correo o WhatsApp con el mensaje redactado |
 
-Además: SEO con `sitemap` y `robots` generados, diseño responsive con estilo *glassmorphism* y animaciones de entrada.
+## Stack
 
-## 🛠️ Stack
+- **Next.js 16** (App Router) con **exportación estática** (`output: "export"`)
+- **React 19** y **TypeScript**
+- **Tailwind CSS 4**: tokens de diseño en `src/app/globals.css`
+- **Framer Motion**: entradas al hacer scroll y transición entre páginas
+- **next/font**: Fraunces (títulos) e Inter (texto), servidas desde el propio dominio
+- Despliegue en **Hostinger** (Apache/LiteSpeed, ver `public/.htaccess`)
 
-- **[Next.js 16](https://nextjs.org/)** (App Router) y **React 19**
-- **TypeScript**
-- **Tailwind CSS 4** para estilos
-- **Framer Motion** para animaciones
-- **Supabase** (PostgreSQL) como base de datos
-- **Resend** para el envío de correos del formulario
-- **Cloudflare Turnstile** contra spam
-- **Vercel** para el despliegue
+`supabase/migrations/` conserva un esquema SQL para una fase futura; el sitio actual no se conecta a Supabase.
 
-## 🗄️ Base de datos
+## Diseño y accesibilidad
 
-El esquema está en [`supabase/migrations/001_initial_schema.sql`](supabase/migrations/001_initial_schema.sql) e incluye las tablas `publications`, `projects`, `events` y `blog_posts`. Cada una tiene el campo `published` para controlar qué contenido es público.
+- Fondo blanco, texto casi negro y un solo acento: azul tinta `#1E3A5F` (contraste 11,5:1).
+- Contraste WCAG AA o superior en todos los textos, foco visible, HTML semántico y `alt` en las imágenes.
+- Móvil primero; revisado a 375, 768, 1024 y 1280 px sin desbordamiento horizontal.
+- Respeta `prefers-reduced-motion`: sin desplazamientos animados para quien lo desactiva.
 
-## 🚀 Ejecutarlo en local
+## Contenido: dónde editar
+
+Todo el contenido está en **`src/lib/data.ts`**:
+
+- `profileData`: biografía (Markdown), áreas, experiencia, educación y habilidades.
+- `credentialsData`: formación y certificaciones. Añade `credentialUrl` para mostrar «Ver credencial».
+- `publicationData`: datos del capítulo, resumen y cita.
+- `projectsData` y `blogPostsData`.
+
+Datos de contacto, palabras clave y URL del sitio: **`src/config/site.ts`**. Menú: **`src/config/navigation.ts`**.
+
+### Publicar el PDF del capítulo
+
+Copia el archivo a `public/docs/hinestroza-moreno-mena-2026-derechos-naturaleza.pdf`. El botón «Descargar PDF» aparece automáticamente en el siguiente `npm run build`. La obra tiene licencia CC BY-NC-ND 4.0, que permite redistribuirla citando la fuente.
+
+## Desarrollo local
 
 Requisitos: Node.js 20 o superior.
 
 ```bash
-# 1. Clonar e instalar
-git clone https://github.com/FRANK1808K/iuriscode-web.git
-cd iuriscode-web
 npm install
-
-# 2. Variables de entorno
-cp .env.example .env.local
-# Completa los valores (ver tabla abajo)
-
-# 3. Iniciar el servidor de desarrollo
-npm run dev
+npm run dev     # http://localhost:3000
+npm run lint    # ESLint
+npm run build   # genera el sitio estático en out/
 ```
 
-Abre [http://localhost:3000](http://localhost:3000).
+### Variable de entorno
 
-### Variables de entorno
-
-| Variable | Para qué sirve |
+| Variable | Uso |
 |---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Conexión a Supabase |
-| `RESEND_API_KEY` / `CONTACT_EMAIL` | Envío de correos del formulario |
-| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` | Verificación anti-spam |
-| `NEXT_PUBLIC_SITE_URL` | URL base del sitio |
+| `NEXT_PUBLIC_SITE_URL` | Dominio público (p. ej. `https://tudominio.com`). Se usa en el sitemap, `robots.txt`, las URL canónicas, Open Graph y JSON-LD. Sin ella, se usa `http://localhost:3000`. |
 
-### Scripts
+## Despliegue en Hostinger
 
-```bash
-npm run dev     # desarrollo
-npm run build   # build de producción
-npm run start   # servir el build
-npm run lint    # revisar el código con ESLint
-```
+1. Define el dominio y genera el sitio:
+   ```bash
+   # en .env.local
+   NEXT_PUBLIC_SITE_URL=https://tudominio.com
+   npm run build
+   ```
+2. Sube **el contenido** de la carpeta `out/` (no la carpeta) a `public_html/` con el Administrador de archivos o por FTP. Incluye `.htaccess`.
+3. Comprueba `https://tudominio.com/`, `/sitemap.xml`, `/robots.txt` y una ruta inexistente (debe mostrar la página 404).
 
-## 📁 Estructura
+## Estructura
 
 ```
 src/
-├── app/          # Rutas (inicio, blog, proyectos, investigación, eventos, contacto)
-├── components/   # layout, secciones de la home y componentes UI reutilizables
-├── config/       # Configuración del sitio y navegación
-├── lib/          # Datos, utilidades y cliente de Supabase
-└── types/        # Tipos de TypeScript
-supabase/
-└── migrations/   # Esquema SQL
+├── app/            # Rutas, layout, template (transición), sitemap, robots, iconos
+├── components/
+│   ├── layout/     # Header, menú móvil y footer
+│   ├── sections/   # Bloques de cada página
+│   └── ui/         # Botones, tarjetas, Markdown, animaciones (Reveal)
+├── config/         # Sitio y navegación
+├── lib/            # Datos, SEO (metadatos y JSON-LD) y utilidades
+└── types/          # Tipos de TypeScript
+public/
+├── images/         # Retrato y og-image.png
+└── docs/           # PDF del capítulo
 ```
 
-## 👤 Autor
+## Autor
 
-**Frank Sebastián Mena** · Estudiante de Derecho, programación, datos e IA · Quibdó, Colombia
+**Frank Sebastián Mena** · Estudiante de Derecho | Derechos humanos y tecnología | Python e IA · Quibdó, Colombia
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/franksebasti%C3%A1nmena/)
+[LinkedIn](https://www.linkedin.com/in/franksebasti%C3%A1nmena/) · [GitHub](https://github.com/FRANK1808K) · frankse1808@gmail.com

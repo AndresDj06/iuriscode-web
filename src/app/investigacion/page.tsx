@@ -1,87 +1,172 @@
-import { publicationsData } from "@/lib/data";
-import { AnimatedSection } from "@/components/ui/AnimatedSection";
+import { existsSync } from "node:fs";
+import path from "node:path";
+import type { Metadata } from "next";
+import { chapterJsonLd, jsonLdScript, pageMetadata } from "@/lib/seo";
+import { BookOpen, Download } from "lucide-react";
+import { profileData, publicationData } from "@/lib/data";
+import { siteConfig } from "@/config/site";
+import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { GlassCard } from "@/components/ui/GlassCard";
-import { Badge } from "@/components/ui/Badge";
-import Link from "next/link";
-import { formatDate, truncate } from "@/lib/utils";
-import { FileText, Book, GraduationCap, Mic } from "lucide-react";
+import { ButtonLink } from "@/components/ui/Button";
 
-const getPublicationIcon = (type: string) => {
-  switch (type) {
-    case "article": return <FileText size={20} className="text-accent-cyan" />;
-    case "book_chapter": return <Book size={20} className="text-accent-violet" />;
-    case "thesis": return <GraduationCap size={20} className="text-success" />;
-    case "paper":
-    case "conference_paper": return <Mic size={20} className="text-warning" />;
-    default: return <FileText size={20} />;
-  }
-};
+const pub = publicationData;
 
-const getPublicationTypeLabel = (type: string) => {
-  const types: Record<string, string> = {
-    article: "Artículo",
-    book_chapter: "Capítulo de Libro",
-    thesis: "Tesis",
-    paper: "Paper",
-    conference_paper: "Ponencia",
-  };
-  return types[type] || type;
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Investigación",
+  description:
+    `«${pub.title}», capítulo de ${pub.authors.join(", ")} en ${pub.book.title} (${pub.book.publisher}, ${pub.book.year}).`,
+  path: "/investigacion/",
+});
 
-export default function ResearchPage() {
-  const publishedPublications = publicationsData.filter(p => p.published);
+/** El PDF se enlaza solo si el archivo existe en /public al generar el sitio. */
+const hasPdf = existsSync(path.join(process.cwd(), "public", pub.pdfUrl));
 
+/** Lista "A, B y C". */
+const joinNames = (names: string[]) =>
+  names.length > 1 ? `${names.slice(0, -1).join(", ")} y ${names[names.length - 1]}` : names[0];
+
+/** Portada tipográfica del capítulo (sin imagen). */
+function DocumentCover() {
   return (
-    <div className="pt-24 pb-16 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <AnimatedSection className="mb-16">
-          <SectionHeading 
-            title="Investigación y Publicaciones" 
-            subtitle="Artículos, investigaciones, ponencias y producción intelectual en la convergencia del Derecho y la Tecnología."
-            accentText="PRODUCCIÓN ACADÉMICA"
-          />
-        </AnimatedSection>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {publishedPublications.map((pub, index) => (
-            <AnimatedSection key={pub.id} delay={index * 0.1} direction="up">
-              <Link href={`/investigacion/${pub.slug}`} className="block h-full">
-                <GlassCard hover className="h-full flex flex-col">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 rounded-lg bg-surface border border-border">
-                      {getPublicationIcon(pub.type)}
-                    </div>
-                    <Badge variant="outline">{getPublicationTypeLabel(pub.type)}</Badge>
-                    {pub.featured && <Badge variant="violet">Destacado</Badge>}
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-text-primary mb-3 line-clamp-2">
-                    {pub.title}
-                  </h3>
-                  
-                  <p className="text-text-muted mb-6 flex-grow line-clamp-3">
-                    {pub.abstract}
-                  </p>
-                  
-                  <div className="mt-auto pt-4 border-t border-border flex flex-col gap-2">
-                    <p className="text-sm text-text-dim">
-                      {pub.journalOrPublisher} • {formatDate(pub.publicationDate)}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {pub.tags.slice(0, 3).map(tag => (
-                        <span key={tag} className="text-xs text-accent-cyan">#{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                </GlassCard>
-              </Link>
-            </AnimatedSection>
-          ))}
-        </div>
-
+    <div
+      aria-hidden="true"
+      className="relative mx-auto flex aspect-[3/4] w-full max-w-52 flex-col justify-between overflow-hidden rounded-md border border-line bg-canvas p-6 shadow-[0_18px_40px_-24px_rgb(18_22_28/0.35)] md:max-w-64"
+    >
+      <span className="absolute inset-y-0 left-0 w-1.5 bg-accent" />
+      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-mute">{pub.kind}</p>
+      <p className="font-serif text-xl font-medium leading-tight text-ink">{pub.title}</p>
+      <div className="flex flex-col gap-1.5">
+        <span className="h-px w-10 bg-line-strong" />
+        <p className="text-xs text-body">Hinestroza, Moreno y Mena</p>
+        <p className="text-[10px] text-mute">
+          {pub.book.publisher} · {pub.book.year}
+        </p>
       </div>
     </div>
+  );
+}
+
+export default function ResearchPage() {
+  const research = profileData.experience.find((job) => job.title === "Asistente de investigación");
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(chapterJsonLd)} />
+      <section className="container-page pb-14 pt-28 sm:pb-16 sm:pt-40">
+        <div className="animate-rise">
+          <SectionHeading
+            as="h1"
+            eyebrow="Investigación"
+            title="Investigación"
+            subtitle="Derechos humanos, derechos étnico-ambientales y derecho público, desde Quibdó."
+          />
+        </div>
+      </section>
+
+      {/* Capítulo */}
+      <section aria-labelledby="doc-title" className="border-t border-line">
+        <div className="container-page grid items-start gap-12 py-16 sm:py-20 md:grid-cols-[minmax(0,16rem)_1fr] md:gap-16">
+          <Reveal className="md:sticky md:top-28">
+            <DocumentCover />
+          </Reveal>
+
+          <Reveal delay={0.08} className="flex min-w-0 flex-col items-start">
+            <p className="flex items-center gap-2 text-sm text-mute">
+              <BookOpen aria-hidden="true" className="size-4" />
+              {pub.kind} · {pub.book.publisher}, {pub.book.year} · pp. {pub.book.pages}
+            </p>
+            <h2 id="doc-title" className="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight sm:text-4xl">
+              {pub.title}
+            </h2>
+            <p className="mt-3 text-lg leading-snug text-body">{pub.subtitle}</p>
+            <p className="mt-4 text-sm text-mute">
+              <span className="sr-only">Autores: </span>
+              {joinNames(pub.authors)} · Universidad Tecnológica del Chocó
+            </p>
+
+            <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+              {hasPdf ? (
+                <a
+                  href={pub.pdfUrl}
+                  download
+                  className="group inline-flex h-12 items-center justify-center gap-2 rounded-md bg-accent px-6 text-[15px] font-medium text-on-accent transition-colors duration-200 hover:bg-accent-hover"
+                >
+                  Descargar PDF
+                  <span className="text-sm font-normal opacity-80">({pub.pdfPages} págs.)</span>
+                  <Download aria-hidden="true" className="size-4 transition-transform duration-200 group-hover:translate-y-0.5" />
+                </a>
+              ) : (
+                <p className="inline-flex h-12 items-center justify-center rounded-md border border-dashed border-line-strong px-6 text-[15px] text-mute">
+                  PDF disponible próximamente
+                </p>
+              )}
+              <ButtonLink href={pub.externalUrl ?? siteConfig.links.linkedin} variant="secondary" size="lg">
+                {pub.externalUrl ? "Ver en LinkedIn" : "Ver mi LinkedIn"}
+              </ButtonLink>
+            </div>
+
+            <h3 className="eyebrow mb-4 mt-14">Resumen</h3>
+            <p className="max-w-prose text-lg leading-relaxed text-body">{pub.summary}</p>
+
+            <h3 className="eyebrow mb-4 mt-12">Preguntas que responde</h3>
+            <ol className="flex max-w-prose list-[lower-roman] flex-col gap-2 pl-6 text-lg text-body marker:text-mute">
+              {pub.questions.map((q) => (
+                <li key={q} className="pl-1">
+                  {q}
+                </li>
+              ))}
+            </ol>
+
+            <h3 className="eyebrow mb-4 mt-12">Publicado en</h3>
+            <dl className="grid max-w-prose grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-[15px]">
+              <dt className="text-mute">Libro</dt>
+              <dd className="text-body">
+                <cite className="not-italic">{pub.book.title}</cite>
+              </dd>
+              <dt className="text-mute">Editores</dt>
+              <dd className="text-body">{joinNames(pub.book.editors)}</dd>
+              <dt className="text-mute">Editorial</dt>
+              <dd className="text-body">
+                {pub.book.publisher} ({pub.book.place}), {pub.book.year} · Colección {pub.book.collection}
+              </dd>
+              <dt className="text-mute">ISBN</dt>
+              <dd className="font-mono text-sm text-body">{pub.book.isbn}</dd>
+            </dl>
+
+            <h3 className="eyebrow mb-4 mt-12">Cómo citar (APA)</h3>
+            <blockquote className="max-w-prose rounded-lg bg-surface p-5 text-[15px] leading-relaxed text-body">
+              {pub.citation}
+            </blockquote>
+
+            <p className="mt-6 text-sm text-mute">
+              Obra publicada bajo licencia{" "}
+              <a
+                href={pub.license.url}
+                target="_blank"
+                rel="noopener noreferrer license"
+                className="link-underline text-body"
+              >
+                {pub.license.name}
+              </a>
+              .
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Contexto */}
+      {research && (
+        <section aria-labelledby="context-title" className="border-t border-line bg-surface">
+          <Reveal className="container-page grid gap-6 py-16 sm:py-20 lg:grid-cols-[1fr_2fr] lg:gap-16">
+            <h2 id="context-title" className="eyebrow">Dónde investigo</h2>
+            <div>
+              <p className="text-sm text-mute">{research.period}</p>
+              <h3 className="mt-1 font-serif text-2xl font-medium">{research.title}</h3>
+              <p className="text-lg text-body">{research.organization}</p>
+            </div>
+          </Reveal>
+        </section>
+      )}
+    </>
   );
 }

@@ -1,81 +1,94 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { navigationItems } from '@/config/navigation'
-import { cn } from '@/lib/utils'
+import { siteConfig } from '@/config/site'
+import { cn, isActivePath } from '@/lib/utils'
 import MobileMenu from './MobileMenu'
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const toggleRef = useRef<HTMLButtonElement>(null)
   const pathname = usePathname()
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    const onScroll = () => setIsScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const closeMenu = useCallback(() => {
+    setIsMenuOpen(false)
+    toggleRef.current?.focus()
   }, [])
 
   return (
     <>
-      <a href="#main-content" className="skip-to-content sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:p-4 focus:bg-background focus:text-text-primary">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-ink focus:px-4 focus:py-2 focus:text-canvas"
+      >
         Ir al contenido principal
       </a>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-          isScrolled 
-            ? "bg-background/80 backdrop-blur-xl border-b border-glass-border py-3"
-            : "bg-transparent py-5"
+          'fixed inset-x-0 top-0 z-50 border-b bg-canvas transition-[border-color,box-shadow] duration-300',
+          isScrolled || isMenuOpen
+            ? 'border-line shadow-[0_1px_12px_-6px_rgb(18_22_28/0.12)]'
+            : 'border-transparent',
         )}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-1 z-50" id="header-logo">
-              <span className="text-xl font-bold text-text-primary">Iuris</span>
-              <span className="text-xl font-bold text-accent-cyan">Code</span>
-            </Link>
+        <div className="container-page flex h-16 items-center justify-between">
+          <Link
+            href="/"
+            className="font-serif text-lg font-medium tracking-tight text-ink"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            {siteConfig.name}
+          </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-8">
-              {navigationItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  id={`nav-link-${item.href.replace('/', '') || 'home'}`}
-                  className={cn(
-                    "text-sm font-medium transition-colors hover:text-text-primary",
-                    pathname === item.href ? "text-accent-cyan" : "text-text-muted"
-                  )}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
+          <nav aria-label="Principal" className="hidden lg:block">
+            <ul className="flex items-center gap-7">
+              {navigationItems.map((item) => {
+                const active = isActivePath(pathname, item.href)
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      aria-current={active ? 'page' : undefined}
+                      className={cn(
+                        'link-underline py-1 text-sm transition-colors duration-200',
+                        active ? 'text-ink [background-size:100%_1px]' : 'text-mute hover:text-ink',
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          </nav>
 
-            {/* Mobile Menu Toggle */}
-            <button
-              id="mobile-menu-toggle"
-              className="md:hidden z-50 p-2 text-text-muted hover:text-text-primary transition-colors"
-              onClick={() => setIsMobileMenuOpen(true)}
-              aria-label="Toggle Menu"
-            >
-              <Menu size={24} />
-            </button>
-          </div>
+          <button
+            ref={toggleRef}
+            type="button"
+            className="-mr-2 rounded-md p-2 text-ink lg:hidden"
+            onClick={() => setIsMenuOpen((open) => !open)}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+            aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+          >
+            {isMenuOpen ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
+          </button>
         </div>
       </header>
 
-      <MobileMenu 
-        isOpen={isMobileMenuOpen} 
-        onClose={() => setIsMobileMenuOpen(false)} 
-      />
+      <MobileMenu isOpen={isMenuOpen} onClose={closeMenu} />
     </>
   )
 }
