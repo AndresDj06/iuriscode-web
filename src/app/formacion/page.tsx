@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { GraduationCap } from "lucide-react";
 import { credentialsData, profileData } from "@/lib/data";
 import { Reveal, Stagger, StaggerItem } from "@/components/ui/Reveal";
@@ -6,11 +7,12 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CredentialCard } from "@/components/sections/formacion/CredentialCard";
 import type { CredentialKind } from "@/types";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Formación y certificaciones",
   description:
     "Programas, certificaciones y cursos de Frank Sebastián Mena: OEA, Harvard, Universidad de Antioquia, Universidad de Cartagena, UNESCO, ICON·S, SENA y UTCH.",
-};
+  path: "/formacion/",
+});
 
 const groups: { kind: CredentialKind; title: string; id: string }[] = [
   { kind: "Programa", title: "Programas", id: "programas" },

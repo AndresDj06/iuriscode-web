@@ -34,20 +34,6 @@
 
   /* Movimiento */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* ---- Alias heredados: se eliminan al migrar todas las páginas ---- */
-  --color-background: var(--color-canvas);
-  --color-border: var(--color-line);
-  --color-hairline: var(--color-line);
-  --color-canvas-soft: var(--color-surface);
-  --color-text-primary: var(--color-ink);
-  --color-text-muted: var(--color-body);
-  --color-text-dim: var(--color-mute);
-  --color-accent-cyan: var(--color-accent);
-  --color-accent-violet: var(--color-accent);
-  --color-primary: var(--color-accent);
-  --color-on-primary: var(--color-on-accent);
-  --color-body-strong: var(--color-accent-hover);
 }
 
 @keyframes rise {
@@ -181,12 +167,5 @@
      Escalonar con style={{ '--delay': '90ms' }}. */
   .animate-rise {
     animation: rise 0.6s var(--ease-out-soft) var(--delay, 0ms) both;
-  }
-
-  /* Alias heredado de .glass (se elimina al migrar las páginas) */
-  .glass {
-    background-color: var(--color-canvas);
-    border: 1px solid var(--color-line);
-    border-radius: 0.75rem;
   }
 }

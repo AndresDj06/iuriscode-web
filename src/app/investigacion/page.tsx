@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 import type { Metadata } from "next";
+import { chapterJsonLd, jsonLdScript, pageMetadata } from "@/lib/seo";
 import { BookOpen, Download } from "lucide-react";
 import { profileData, publicationData } from "@/lib/data";
 import { siteConfig } from "@/config/site";
@@ -10,10 +11,12 @@ import { ButtonLink } from "@/components/ui/Button";
 
 const pub = publicationData;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Investigación",
-  description: `«${pub.title}», capítulo de ${pub.authors.join(", ")} en ${pub.book.title} (${pub.book.publisher}, ${pub.book.year}).`,
-};
+  description:
+    `«${pub.title}», capítulo de ${pub.authors.join(", ")} en ${pub.book.title} (${pub.book.publisher}, ${pub.book.year}).`,
+  path: "/investigacion/",
+});
 
 /** El PDF se enlaza solo si el archivo existe en /public al generar el sitio. */
 const hasPdf = existsSync(path.join(process.cwd(), "public", pub.pdfUrl));
@@ -48,6 +51,7 @@ export default function ResearchPage() {
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(chapterJsonLd)} />
       <section className="container-page pb-14 pt-28 sm:pb-16 sm:pt-40">
         <div className="animate-rise">
           <SectionHeading

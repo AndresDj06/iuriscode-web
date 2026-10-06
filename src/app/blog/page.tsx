@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { PenLine } from "lucide-react";
 import { blogPostsData } from "@/lib/data";
 import { siteConfig } from "@/config/site";
@@ -8,12 +9,14 @@ import { ButtonLink } from "@/components/ui/Button";
 
 const isEmpty = blogPostsData.length === 0;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Blog",
-  description: "Artículos de Frank Sebastián Mena sobre derecho, derechos humanos y tecnología.",
+  description:
+    "Artículos de Frank Sebastián Mena sobre derecho, derechos humanos y tecnología.",
+  path: "/blog/",
   // Sin artículos no hay nada que indexar.
-  ...(isEmpty ? { robots: { index: false, follow: true } } : {}),
-};
+  noIndex: isEmpty,
+});
 
 /**
  * Estado vacío mientras no haya artículos reales.

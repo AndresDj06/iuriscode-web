@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { Check } from "lucide-react";
 import { projectsData } from "@/lib/data";
 import { Reveal, Stagger, StaggerItem } from "@/components/ui/Reveal";
@@ -7,11 +8,12 @@ import { Badge } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
 import { GitHubIcon } from "@/components/ui/SocialIcons";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Proyectos",
   description:
     "Proyectos personales de Frank Sebastián Mena: este sitio web, construido con Next.js, React y TypeScript.",
-};
+  path: "/proyectos/",
+});
 
 export default function ProjectsPage() {
   return (

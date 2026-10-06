@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import type { ReactNode } from "react";
 import { Mail, MapPin } from "lucide-react";
 import { siteConfig } from "@/config/site";
@@ -7,10 +8,12 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { GitHubIcon, LinkedInIcon, WhatsAppIcon } from "@/components/ui/SocialIcons";
 import ContactForm from "@/components/sections/contacto/ContactForm";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Contacto",
-  description: `Escríbele a ${siteConfig.author.name} por correo o WhatsApp. ${siteConfig.author.location}.`,
-};
+  description:
+    `Escríbele a ${siteConfig.author.name} por correo o WhatsApp. ${siteConfig.author.location}.`,
+  path: "/contacto/",
+});
 
 interface ChannelProps {
   icon: ReactNode;

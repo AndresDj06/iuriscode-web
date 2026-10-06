@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowRight, MapPin } from "lucide-react";
 import { profileData } from "@/lib/data";
@@ -10,11 +11,12 @@ import { Headline } from "@/components/ui/Headline";
 import { Badge } from "@/components/ui/Badge";
 import { Timeline } from "@/components/sections/about/Timeline";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Sobre mí",
   description:
     "Biografía, experiencia y educación de Frank Sebastián Mena, estudiante de Derecho en Quibdó, Chocó.",
-};
+  path: "/sobre-mi/",
+});
 
 export default function AboutPage() {
   return (
