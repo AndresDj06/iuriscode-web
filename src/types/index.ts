@@ -51,10 +51,28 @@ export interface Credential {
 // --- Investigación ---
 export interface Publication {
   title: string;
-  format: string;
-  /** null mientras falte el resumen real. */
-  summary: string | null;
-  pdfUrl?: string;
+  subtitle: string;
+  kind: string;
+  authors: string[];
+  book: {
+    title: string;
+    editors: string[];
+    publisher: string;
+    place: string;
+    year: number;
+    pages: string;
+    isbn: string;
+    collection: string;
+  };
+  license: { name: string; url: string };
+  /** Resumen fiel al texto del capítulo. */
+  summary: string;
+  questions: string[];
+  /** Cita en formato APA. */
+  citation: string;
+  /** Ruta dentro de /public. El botón solo aparece si el archivo existe. */
+  pdfUrl: string;
+  pdfPages: number;
   externalUrl?: string;
 }
 

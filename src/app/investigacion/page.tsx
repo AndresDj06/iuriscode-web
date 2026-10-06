@@ -1,37 +1,49 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
 import type { Metadata } from "next";
-import { Download, FileText } from "lucide-react";
+import { BookOpen, Download } from "lucide-react";
 import { profileData, publicationData } from "@/lib/data";
 import { siteConfig } from "@/config/site";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ButtonLink } from "@/components/ui/Button";
 
+const pub = publicationData;
+
 export const metadata: Metadata = {
   title: "Investigación",
-  description:
-    "«¿Quién decide los derechos de la naturaleza?», documento de Frank Sebastián Mena, y su trabajo como asistente de investigación en la Universidad Tecnológica del Chocó.",
+  description: `«${pub.title}», capítulo de ${pub.authors.join(", ")} en ${pub.book.title} (${pub.book.publisher}, ${pub.book.year}).`,
 };
 
-/** Portada tipográfica del documento (sin imagen). */
-function DocumentCover({ title, author }: { title: string; author: string }) {
+/** El PDF se enlaza solo si el archivo existe en /public al generar el sitio. */
+const hasPdf = existsSync(path.join(process.cwd(), "public", pub.pdfUrl));
+
+/** Lista "A, B y C". */
+const joinNames = (names: string[]) =>
+  names.length > 1 ? `${names.slice(0, -1).join(", ")} y ${names[names.length - 1]}` : names[0];
+
+/** Portada tipográfica del capítulo (sin imagen). */
+function DocumentCover() {
   return (
     <div
       aria-hidden="true"
-      className="relative mx-auto flex aspect-[3/4] w-full max-w-52 flex-col md:max-w-64 justify-between overflow-hidden rounded-md border border-line bg-canvas p-6 shadow-[0_18px_40px_-24px_rgb(18_22_28/0.35)]"
+      className="relative mx-auto flex aspect-[3/4] w-full max-w-52 flex-col justify-between overflow-hidden rounded-md border border-line bg-canvas p-6 shadow-[0_18px_40px_-24px_rgb(18_22_28/0.35)] md:max-w-64"
     >
       <span className="absolute inset-y-0 left-0 w-1.5 bg-accent" />
-      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-mute">Documento</p>
-      <p className="font-serif text-xl font-medium leading-tight text-ink">{title}</p>
+      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-mute">{pub.kind}</p>
+      <p className="font-serif text-xl font-medium leading-tight text-ink">{pub.title}</p>
       <div className="flex flex-col gap-1.5">
         <span className="h-px w-10 bg-line-strong" />
-        <p className="text-xs text-body">{author}</p>
+        <p className="text-xs text-body">Hinestroza, Moreno y Mena</p>
+        <p className="text-[10px] text-mute">
+          {pub.book.publisher} · {pub.book.year}
+        </p>
       </div>
     </div>
   );
 }
 
 export default function ResearchPage() {
-  const pub = publicationData;
   const research = profileData.experience.find((job) => job.title === "Asistente de investigación");
 
   return (
@@ -47,32 +59,36 @@ export default function ResearchPage() {
         </Reveal>
       </section>
 
-      {/* Documento */}
+      {/* Capítulo */}
       <section aria-labelledby="doc-title" className="border-t border-line">
-        <div className="container-page grid items-center gap-12 py-16 sm:py-20 md:grid-cols-[minmax(0,16rem)_1fr] md:gap-16">
-          <Reveal>
-            <DocumentCover title={pub.title} author={profileData.fullName} />
+        <div className="container-page grid items-start gap-12 py-16 sm:py-20 md:grid-cols-[minmax(0,16rem)_1fr] md:gap-16">
+          <Reveal className="md:sticky md:top-28">
+            <DocumentCover />
           </Reveal>
 
-          <Reveal delay={0.08} className="flex flex-col items-start">
+          <Reveal delay={0.08} className="flex min-w-0 flex-col items-start">
             <p className="flex items-center gap-2 text-sm text-mute">
-              <FileText aria-hidden="true" className="size-4" />
-              {pub.format}
+              <BookOpen aria-hidden="true" className="size-4" />
+              {pub.kind} · {pub.book.publisher}, {pub.book.year} · pp. {pub.book.pages}
             </p>
             <h2 id="doc-title" className="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight sm:text-4xl">
               {pub.title}
             </h2>
-
-            {pub.summary && <p className="mt-5 max-w-prose text-lg leading-relaxed text-body">{pub.summary}</p>}
+            <p className="mt-3 text-lg leading-snug text-body">{pub.subtitle}</p>
+            <p className="mt-4 text-sm text-mute">
+              <span className="sr-only">Autores: </span>
+              {joinNames(pub.authors)} · Universidad Tecnológica del Chocó
+            </p>
 
             <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-              {pub.pdfUrl ? (
+              {hasPdf ? (
                 <a
                   href={pub.pdfUrl}
                   download
                   className="group inline-flex h-12 items-center justify-center gap-2 rounded-md bg-accent px-6 text-[15px] font-medium text-on-accent transition-colors duration-200 hover:bg-accent-hover"
                 >
                   Descargar PDF
+                  <span className="text-sm font-normal opacity-80">({pub.pdfPages} págs.)</span>
                   <Download aria-hidden="true" className="size-4 transition-transform duration-200 group-hover:translate-y-0.5" />
                 </a>
               ) : (
@@ -84,6 +100,52 @@ export default function ResearchPage() {
                 {pub.externalUrl ? "Ver en LinkedIn" : "Ver mi LinkedIn"}
               </ButtonLink>
             </div>
+
+            <h3 className="eyebrow mb-4 mt-14">Resumen</h3>
+            <p className="max-w-prose text-lg leading-relaxed text-body">{pub.summary}</p>
+
+            <h3 className="eyebrow mb-4 mt-12">Preguntas que responde</h3>
+            <ol className="flex max-w-prose list-[lower-roman] flex-col gap-2 pl-6 text-lg text-body marker:text-mute">
+              {pub.questions.map((q) => (
+                <li key={q} className="pl-1">
+                  {q}
+                </li>
+              ))}
+            </ol>
+
+            <h3 className="eyebrow mb-4 mt-12">Publicado en</h3>
+            <dl className="grid max-w-prose grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-[15px]">
+              <dt className="text-mute">Libro</dt>
+              <dd className="text-body">
+                <cite className="not-italic">{pub.book.title}</cite>
+              </dd>
+              <dt className="text-mute">Editores</dt>
+              <dd className="text-body">{joinNames(pub.book.editors)}</dd>
+              <dt className="text-mute">Editorial</dt>
+              <dd className="text-body">
+                {pub.book.publisher} ({pub.book.place}), {pub.book.year} · Colección {pub.book.collection}
+              </dd>
+              <dt className="text-mute">ISBN</dt>
+              <dd className="font-mono text-sm text-body">{pub.book.isbn}</dd>
+            </dl>
+
+            <h3 className="eyebrow mb-4 mt-12">Cómo citar (APA)</h3>
+            <blockquote className="max-w-prose rounded-lg bg-surface p-5 text-[15px] leading-relaxed text-body">
+              {pub.citation}
+            </blockquote>
+
+            <p className="mt-6 text-sm text-mute">
+              Obra publicada bajo licencia{" "}
+              <a
+                href={pub.license.url}
+                target="_blank"
+                rel="noopener noreferrer license"
+                className="link-underline text-body"
+              >
+                {pub.license.name}
+              </a>
+              .
+            </p>
           </Reveal>
         </div>
       </section>

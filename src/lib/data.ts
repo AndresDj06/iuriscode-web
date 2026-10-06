@@ -21,7 +21,9 @@ export const profileData: Profile = {
 
 Desde enero de 2025 soy **asistente de investigación** en la Universidad Tecnológica del Chocó y, desde febrero de 2026, **aprendiz en la Fundación A+**, donde apoyo la gestión de proyectos y la labor directiva.
 
-Me he formado en el Sistema Interamericano de Derechos Humanos con la OEA, en estudios afrolatinoamericanos con la Universidad de Harvard y en inteligencia artificial y Python con la Universidad de Antioquia. También estudié la Ley 70 de 1993 y el Acuerdo de Escazú, y escribí el documento *¿Quién decide los derechos de la naturaleza?*.
+Me he formado en el Sistema Interamericano de Derechos Humanos con la OEA, en estudios afrolatinoamericanos con la Universidad de Harvard y en inteligencia artificial y Python con la Universidad de Antioquia. También estudié la Ley 70 de 1993 y el Acuerdo de Escazú.
+
+Con Lisneider Hinestroza Cuesta y Nelsy Moreno Ibargüen soy coautor del capítulo *¿Quién decide los derechos de la naturaleza?*, publicado en 2026 por Pireo Editorial en el libro *Derechos de la Naturaleza desde el Mediterráneo*.
 
 Este sitio, construido con Next.js y TypeScript, es mi proyecto personal en desarrollo.`,
   focusAreas: [
@@ -38,7 +40,7 @@ Este sitio, construido con Next.js y TypeScript, es mi proyecto personal en desa
     {
       title: "Investigación",
       description:
-        "Asistente de investigación en la Universidad Tecnológica del Chocó desde 2025, con interés en derecho público, constitucional y ambiental.",
+        "Asistente de investigación en la Universidad Tecnológica del Chocó desde 2025 y coautor de un capítulo sobre los derechos de la naturaleza y el río Atrato (Pireo Editorial, 2026).",
     },
   ],
   experience: [
@@ -203,11 +205,37 @@ export const credentialsData: Credential[] = [
 
 export const publicationData: Publication = {
   title: "¿Quién decide los derechos de la naturaleza?",
-  format: "Documento de 26 páginas · Publicado en LinkedIn",
-  // [PENDIENTE: resumen del documento escrito por el autor]
-  summary: null,
-  // [PENDIENTE: subir el PDF a /public/docs y poner aquí la ruta, p. ej. "/docs/derechos-naturaleza.pdf"]
-  pdfUrl: undefined,
+  subtitle:
+    "Reflexiones sobre la tutela de la naturaleza en tiempos de emergencia climática a partir de las cosmovisiones de comunidades ribereñas del río Atrato (Chocó, Colombia)",
+  kind: "Capítulo de libro",
+  authors: ["Lisneider Hinestroza Cuesta", "Nelsy Moreno Ibargüen", "Frank Sebastián Mena García"],
+  book: {
+    title:
+      "Derechos de la Naturaleza desde el Mediterráneo. La participación activa de la ciudadanía frente a la crisis climática",
+    editors: ["María Jesús García García", "Rubén Martínez Dalmau", "Aurora Pedro Bueno"],
+    publisher: "Pireo Editorial",
+    place: "València",
+    year: 2026,
+    pages: "336–357",
+    isbn: "978-84-129876-8-3",
+    collection: "Pireo Universidad",
+  },
+  license: {
+    name: "CC BY-NC-ND 4.0",
+    url: "https://creativecommons.org/licenses/by-nc-nd/4.0/deed.es",
+  },
+  // Resumen redactado a partir del texto del capítulo. [PENDIENTE: revisión del autor]
+  summary:
+    "El capítulo pregunta quién define los derechos que se le reconocen a la naturaleza. A partir de la Sentencia T-622 de 2016, que declaró al río Atrato sujeto de derechos, de la sentencia STC 4360 de 2018 y de la Ley 2415 de 2024, sostiene que ese reconocimiento ha sido «un cambio sin cambio»: jueces y legisladores siguen definiendo esos derechos sin incorporar las cosmovisiones de las comunidades ribereñas. Desde el pluralismo jurídico, la interculturalidad crítica y filosofías como el vivir sabroso, el Ubuntu y el Muntu, propone una justicia dialógica e intercultural, co-construida entre operadores jurídicos y comunidades étnico-territoriales: «quitarse las togas y ponerse las botas».",
+  questions: [
+    "¿Quién y cómo decide que la naturaleza tiene derechos?",
+    "¿Cuáles son los derechos que se le deben reconocer a la naturaleza?",
+  ],
+  citation:
+    "Hinestroza Cuesta, L., Moreno Ibargüen, N. y Mena García, F. S. (2026). ¿Quién decide los derechos de la naturaleza? Reflexiones sobre la tutela de la naturaleza en tiempos de emergencia climática a partir de las cosmovisiones de comunidades ribereñas del río Atrato (Chocó, Colombia). En M. J. García García, R. Martínez Dalmau y A. Pedro Bueno (Eds.), Derechos de la Naturaleza desde el Mediterráneo. La participación activa de la ciudadanía frente a la crisis climática (pp. 336–357). Pireo Editorial.",
+  // [PENDIENTE: copiar el PDF a public/docs/ con este nombre exacto]
+  pdfUrl: "/docs/hinestroza-moreno-mena-2026-derechos-naturaleza.pdf",
+  pdfPages: 26,
   // [PENDIENTE: enlace a la publicación en LinkedIn]
   externalUrl: undefined,
 };
