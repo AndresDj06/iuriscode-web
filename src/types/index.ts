@@ -64,6 +64,8 @@ export interface Project {
   status: string;
   summary: string;
   problem: string;
+  /** Características verificables en el propio código. */
+  highlights: string[];
   stack: string[];
   repositoryUrl?: string;
   liveUrl?: string;

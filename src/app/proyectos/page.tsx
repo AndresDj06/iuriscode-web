@@ -1,42 +1,94 @@
 import type { Metadata } from "next";
+import { Check } from "lucide-react";
 import { projectsData } from "@/lib/data";
-import { Reveal } from "@/components/ui/Reveal";
+import { Reveal, Stagger, StaggerItem } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Badge } from "@/components/ui/Badge";
+import { ButtonLink } from "@/components/ui/Button";
+import { GitHubIcon } from "@/components/ui/SocialIcons";
 
 export const metadata: Metadata = {
   title: "Proyectos",
-  description: "Proyectos personales de Frank Sebastián Mena.",
+  description:
+    "Proyectos personales de Frank Sebastián Mena: este sitio web, construido con Next.js, React y TypeScript.",
 };
 
 export default function ProjectsPage() {
   return (
-    <div className="pt-24 pb-16">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Reveal className="mb-16">
-          <SectionHeading title="Proyectos" eyebrow="PORTAFOLIO" />
+    <>
+      <section className="container-page pb-14 pt-28 sm:pb-16 sm:pt-40">
+        <Reveal>
+          <SectionHeading
+            as="h1"
+            eyebrow="Proyectos"
+            title="Proyectos"
+            subtitle="Lo que construyo para unir el derecho con la tecnología."
+          />
         </Reveal>
-        {projectsData.map((project) => (
-          <Reveal key={project.title}>
-            <article className="glass p-8">
-              <Badge>{project.status}</Badge>
-              <h2 className="text-2xl font-bold text-text-primary mt-4 mb-3">{project.title}</h2>
-              <p className="text-text-muted mb-4">{project.summary}</p>
-              <p className="text-text-muted mb-6">{project.problem}</p>
-              <ul className="flex flex-wrap gap-2 mb-6">
-                {project.stack.map((tech) => (
-                  <li key={tech}><Badge variant="outline">{tech}</Badge></li>
-                ))}
-              </ul>
-              {project.repositoryUrl && (
-                <a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer" className="underline">
-                  Ver repositorio
-                </a>
+      </section>
+
+      {projectsData.map((project, index) => {
+        const titleId = `project-${index}-title`;
+        return (
+          <section key={project.title} aria-labelledby={titleId} className="border-t border-line">
+            <div className="container-page py-16 sm:py-20">
+              <Reveal className="max-w-3xl">
+                <Badge variant="accent">{project.status}</Badge>
+                <h2 id={titleId} className="mt-4 font-serif text-3xl font-medium tracking-tight sm:text-4xl">
+                  {project.title}
+                </h2>
+                <p className="mt-4 text-lg leading-relaxed text-body">{project.summary}</p>
+              </Reveal>
+
+              <div className="mt-12 grid gap-10 lg:grid-cols-3 lg:gap-12">
+                <Reveal>
+                  <h3 className="eyebrow mb-4">Problema</h3>
+                  <p className="leading-relaxed text-body">{project.problem}</p>
+                </Reveal>
+
+                <Reveal delay={0.06}>
+                  <h3 className="eyebrow mb-4">Qué incluye</h3>
+                  <Stagger as="ul" className="flex flex-col gap-3">
+                    {project.highlights.map((item) => (
+                      <StaggerItem as="li" key={item} className="flex gap-3 leading-relaxed text-body">
+                        <Check aria-hidden="true" className="mt-1 size-4 shrink-0 text-accent" />
+                        {item}
+                      </StaggerItem>
+                    ))}
+                  </Stagger>
+                </Reveal>
+
+                <Reveal delay={0.12}>
+                  <h3 className="eyebrow mb-4">Stack</h3>
+                  <ul className="flex flex-wrap gap-2">
+                    {project.stack.map((tech) => (
+                      <li key={tech}>
+                        <Badge variant="outline">{tech}</Badge>
+                      </li>
+                    ))}
+                  </ul>
+                </Reveal>
+              </div>
+
+              {(project.repositoryUrl || project.liveUrl) && (
+                <Reveal className="mt-12 flex flex-col gap-3 border-t border-line pt-8 sm:flex-row">
+                  {project.liveUrl && (
+                    <ButtonLink href={project.liveUrl} size="lg" arrow>
+                      Ver el sitio
+                    </ButtonLink>
+                  )}
+                  {project.repositoryUrl && (
+                    <ButtonLink href={project.repositoryUrl} variant="secondary" size="lg">
+                      <GitHubIcon size={18} />
+                      Ver el repositorio
+                    </ButtonLink>
+                  )}
+                </Reveal>
               )}
-            </article>
-          </Reveal>
-        ))}
-      </div>
-    </div>
+            </div>
+          </section>
+        );
+      })}
+    </>
   );
 }

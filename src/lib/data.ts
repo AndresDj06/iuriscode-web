@@ -224,6 +224,12 @@ export const projectsData: Project[] = [
       "Mi sitio personal: reúne mi perfil, mi formación, mi investigación y un canal de contacto en un solo lugar.",
     problem:
       "Necesitaba un espacio propio, más completo que un perfil en redes, para presentar con datos verificables mi trabajo entre el derecho y la tecnología.",
+    highlights: [
+      "Sitio estático generado con Next.js y publicado en Hostinger.",
+      "Diseño adaptable a móvil, tableta y escritorio.",
+      "Accesibilidad: contraste AA, foco visible, navegación por teclado y respeto por la preferencia de movimiento reducido.",
+      "Contenido centralizado en un solo archivo de datos, sin información de relleno.",
+    ],
     stack: [
       "Next.js 16 (App Router)",
       "React 19",
