@@ -17,14 +17,14 @@ export default function ProjectsPage() {
   return (
     <>
       <section className="container-page pb-14 pt-28 sm:pb-16 sm:pt-40">
-        <Reveal>
+        <div className="animate-rise">
           <SectionHeading
             as="h1"
             eyebrow="Proyectos"
             title="Proyectos"
             subtitle="Lo que construyo para unir el derecho con la tecnología."
           />
-        </Reveal>
+        </div>
       </section>
 
       {projectsData.map((project, index) => {

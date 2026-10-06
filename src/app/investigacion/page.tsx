@@ -49,14 +49,14 @@ export default function ResearchPage() {
   return (
     <>
       <section className="container-page pb-14 pt-28 sm:pb-16 sm:pt-40">
-        <Reveal>
+        <div className="animate-rise">
           <SectionHeading
             as="h1"
             eyebrow="Investigación"
             title="Investigación"
             subtitle="Derechos humanos, derechos étnico-ambientales y derecho público, desde Quibdó."
           />
-        </Reveal>
+        </div>
       </section>
 
       {/* Capítulo */}

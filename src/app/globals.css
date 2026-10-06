@@ -50,6 +50,17 @@
   --color-body-strong: var(--color-accent-hover);
 }
 
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @layer base {
   :root {
     color-scheme: light;
@@ -164,6 +175,12 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-accent);
+  }
+
+  /* Entrada al cargar, solo con CSS (no espera al JavaScript: mejor LCP).
+     Escalonar con style={{ '--delay': '90ms' }}. */
+  .animate-rise {
+    animation: rise 0.6s var(--ease-out-soft) var(--delay, 0ms) both;
   }
 
   /* Alias heredado de .glass (se elimina al migrar las páginas) */

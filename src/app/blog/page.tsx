@@ -23,9 +23,9 @@ export const metadata: Metadata = {
 export default function BlogPage() {
   return (
     <section className="container-page pb-24 pt-28 sm:pb-32 sm:pt-40">
-      <Reveal>
+      <div className="animate-rise">
         <SectionHeading as="h1" eyebrow="Blog" title="Blog" />
-      </Reveal>
+      </div>
 
       <Reveal delay={0.08} className="mt-12">
         <div className="flex flex-col items-start gap-6 rounded-xl border border-dashed border-line-strong p-8 sm:p-12">

@@ -61,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${inter.variable} ${fraunces.variable}`}>
+    <html lang="es" data-scroll-behavior="smooth" className={`${inter.variable} ${fraunces.variable}`}>
       <body className="flex min-h-screen flex-col bg-canvas font-sans text-body antialiased">
         <MotionProvider>
           <Header />

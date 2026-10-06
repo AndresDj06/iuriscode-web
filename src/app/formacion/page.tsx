@@ -24,14 +24,14 @@ export default function FormacionPage() {
   return (
     <>
       <section className="container-page pb-14 pt-28 sm:pb-16 sm:pt-40">
-        <Reveal>
+        <div className="animate-rise">
           <SectionHeading
             as="h1"
             eyebrow="Formación"
             title="Formación y certificaciones"
             subtitle="Programas, certificaciones y cursos que complementan mis estudios de Derecho."
           />
-        </Reveal>
+        </div>
 
         {/* Pregrado */}
         <Reveal delay={0.08} className="mt-12">

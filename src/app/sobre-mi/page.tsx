@@ -21,7 +21,7 @@ export default function AboutPage() {
     <>
       {/* Cabecera */}
       <section className="container-page pb-16 pt-28 sm:pb-20 sm:pt-40">
-        <Reveal className="flex flex-col gap-8 sm:flex-row sm:items-center sm:gap-10">
+        <div className="animate-rise flex flex-col gap-8 sm:flex-row sm:items-center sm:gap-10">
           <Portrait eager className="size-28 sm:size-40" />
           <div>
             <p className="eyebrow mb-4">Sobre mí</p>
@@ -34,7 +34,7 @@ export default function AboutPage() {
               {profileData.location}
             </p>
           </div>
-        </Reveal>
+        </div>
       </section>
 
       {/* Biografía */}

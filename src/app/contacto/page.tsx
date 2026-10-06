@@ -49,14 +49,14 @@ export default function ContactPage() {
   return (
     <>
       <section className="container-page pb-14 pt-28 sm:pb-16 sm:pt-40">
-        <Reveal>
+        <div className="animate-rise">
           <SectionHeading
             as="h1"
             eyebrow="Contacto"
             title="Hablemos"
             subtitle="Escríbeme sobre derechos humanos, investigación jurídica o tecnología."
           />
-        </Reveal>
+        </div>
       </section>
 
       <section aria-label="Formulario y datos de contacto" className="border-t border-line">
