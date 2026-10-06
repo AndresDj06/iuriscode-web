@@ -17,7 +17,7 @@ Es un proyecto personal en desarrollo. Todo el contenido proviene de datos verif
 | `/investigacion/` | Capítulo «¿Quién decide los derechos de la naturaleza?» (Pireo Editorial, 2026), en coautoría con Lisneider Hinestroza Cuesta y Nelsy Moreno Ibargüen |
 | `/proyectos/` | Este sitio como caso: problema, alcance y stack |
 | `/blog/` | Próximamente (no indexado mientras no haya artículos) |
-| `/contacto/` | Formulario que abre el correo o WhatsApp con el mensaje redactado |
+| `/contacto/` | Formulario que envía el mensaje a tu correo (Web3Forms), con alternativa por WhatsApp |
 
 ## Stack
 
@@ -25,6 +25,7 @@ Es un proyecto personal en desarrollo. Todo el contenido proviene de datos verif
 - **React 19** y **TypeScript**
 - **Tailwind CSS 4**: tokens de diseño en `src/app/globals.css`
 - **Framer Motion**: entradas al hacer scroll y transición entre páginas
+- **Web3Forms**: envío del formulario de contacto sin servidor
 - **next/font**: Fraunces (títulos) e Inter (texto), servidas desde el propio dominio
 - Despliegue en **Hostinger** (Apache/LiteSpeed, ver `public/.htaccess`)
 
@@ -63,11 +64,22 @@ npm run lint    # ESLint
 npm run build   # genera el sitio estático en out/
 ```
 
-### Variable de entorno
+### Variables de entorno
+
+Se definen en `.env.local` y se incrustan al compilar: después de cambiarlas, reinicia `npm run dev` o vuelve a ejecutar `npm run build`.
 
 | Variable | Uso |
 |---|---|
 | `NEXT_PUBLIC_SITE_URL` | Dominio público (p. ej. `https://tudominio.com`). Se usa en el sitemap, `robots.txt`, las URL canónicas, Open Graph y JSON-LD. Sin ella, se usa `http://localhost:3000`. |
+| `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | Clave de [Web3Forms](https://web3forms.com) para que el formulario envíe los mensajes a tu correo. Es pública por diseño: solo permite enviarte mensajes a ti. Sin ella, el formulario abre el correo o WhatsApp del visitante. |
+
+### Formulario de contacto
+
+1. Entra en [web3forms.com](https://web3forms.com), escribe `frankse1808@gmail.com` y pulsa «Create Access Key». La clave llega a ese correo.
+2. Añádela a `.env.local`: `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=tu-clave`.
+3. Reinicia `npm run dev` y envía un mensaje de prueba desde `/contacto/`.
+
+El plan gratuito permite 250 envíos al mes. El formulario incluye un campo trampa contra bots y un tiempo límite de 15 s.
 
 ## Despliegue en Hostinger
 
