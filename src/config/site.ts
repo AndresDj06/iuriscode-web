@@ -32,7 +32,7 @@ export const siteConfig = {
    */
   contactForm: {
     endpoint: "https://api.web3forms.com/submit",
-    accessKey: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "e235906e-89df-42db-b465-1986f5eabee5",
+    accessKey: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "0f577e06-a561-4853-902c-48d0c6ab37cc",
   },
   keywords: [
     "Frank Sebastián Mena",
