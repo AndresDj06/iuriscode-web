@@ -17,7 +17,7 @@ Es un proyecto personal en desarrollo. Todo el contenido proviene de datos verif
 | `/investigacion/` | Capítulo «¿Quién decide los derechos de la naturaleza?» (Pireo Editorial, 2026), en coautoría con Lisneider Hinestroza Cuesta y Nelsy Moreno Ibargüen |
 | `/proyectos/` | Este sitio como caso: problema, alcance y stack |
 | `/blog/` | Próximamente (no indexado mientras no haya artículos) |
-| `/contacto/` | Formulario que abre el correo o WhatsApp con el mensaje redactado |
+| `/contacto/` | Formulario que envía el mensaje a tu correo (Web3Forms), con alternativa por WhatsApp |
 
 ## Stack
 
@@ -25,6 +25,7 @@ Es un proyecto personal en desarrollo. Todo el contenido proviene de datos verif
 - **React 19** y **TypeScript**
 - **Tailwind CSS 4**: tokens de diseño en `src/app/globals.css`
 - **Framer Motion**: entradas al hacer scroll y transición entre páginas
+- **Web3Forms**: envío del formulario de contacto sin servidor
 - **next/font**: Fraunces (títulos) e Inter (texto), servidas desde el propio dominio
 - Despliegue en **Hostinger** (Apache/LiteSpeed, ver `public/.htaccess`)
 
@@ -63,11 +64,23 @@ npm run lint    # ESLint
 npm run build   # genera el sitio estático en out/
 ```
 
-### Variable de entorno
+### Variables de entorno
+
+Se definen en `.env.local` y se incrustan al compilar: después de cambiarlas, reinicia `npm run dev` o vuelve a ejecutar `npm run build`.
 
 | Variable | Uso |
 |---|---|
 | `NEXT_PUBLIC_SITE_URL` | Dominio público (p. ej. `https://tudominio.com`). Se usa en el sitemap, `robots.txt`, las URL canónicas, Open Graph y JSON-LD. Sin ella, se usa `http://localhost:3000`. |
+| `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | Opcional. Reemplaza la clave de [Web3Forms](https://web3forms.com) que ya trae `src/config/site.ts` (pública por diseño: solo permite enviarte mensajes a ti). |
+
+### Formulario de contacto
+
+Ya funciona: la clave de Web3Forms está en `src/config/site.ts` (`contactForm.accessKey`) y los mensajes llegan a `frankse1808@gmail.com`. El correo de quien escribe queda como dirección de respuesta.
+
+- En el panel de Web3Forms, el campo «Website URL» del formulario está en `localhost`. **Cámbialo por el dominio de Hostinger** cuando lo tengas.
+- Para cambiar de clave, edita `site.ts` o define `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` en `.env.local`.
+
+El plan gratuito permite 250 envíos al mes. El formulario incluye un campo trampa contra bots y un tiempo límite de 15 s.
 
 ## Despliegue en Hostinger
 

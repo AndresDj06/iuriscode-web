@@ -25,6 +25,15 @@ export const siteConfig = {
     whatsapp: `https://wa.me/${whatsappNumber}`,
     email: `mailto:${email}`,
   },
+  /**
+   * Formulario de contacto vía Web3Forms (sitio estático, sin servidor).
+   * La clave es pública por diseño: solo permite enviar mensajes a tu correo.
+   * NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY la reemplaza si está definida.
+   */
+  contactForm: {
+    endpoint: "https://api.web3forms.com/submit",
+    accessKey: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "e235906e-89df-42db-b465-1986f5eabee5",
+  },
   keywords: [
     "Frank Sebastián Mena",
     "derechos humanos",
