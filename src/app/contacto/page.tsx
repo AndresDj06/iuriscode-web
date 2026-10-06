@@ -2,13 +2,11 @@
 
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { GlassCard } from "@/components/ui/GlassCard";
 import { Input, Textarea } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { siteConfig } from "@/config/site";
-import { profileData } from "@/lib/data";
-import { Mail, MapPin, Phone, MessageCircle } from "lucide-react";
-import { LinkedInIcon, GitHubIcon, WhatsAppIcon } from "@/components/ui/SocialIcons";
+import { Mail, MapPin, MessageCircle } from "lucide-react";
+import { LinkedInIcon, GitHubIcon } from "@/components/ui/SocialIcons";
 
 export default function ContactPage() {
   return (
@@ -17,8 +15,8 @@ export default function ContactPage() {
         
         <AnimatedSection className="mb-16">
           <SectionHeading 
-            title="Ponte en Contacto" 
-            subtitle="¿Interesado en consultoría LegalTech, colaboración académica o desarrollo de proyectos? Hablemos."
+            title="Contacto" 
+            subtitle="Escríbeme sobre derechos humanos, investigación jurídica o tecnología."
             accentText="CONTACTO"
           />
         </AnimatedSection>
@@ -28,18 +26,17 @@ export default function ContactPage() {
           <AnimatedSection direction="left">
             <h3 className="text-2xl font-bold text-text-primary mb-6">Información de Contacto</h3>
             <p className="text-text-muted mb-8 leading-relaxed">
-              Estoy disponible para proyectos de consultoría, desarrollo LegalTech, charlas y conferencias, o investigaciones conjuntas. 
-              Puedes usar el formulario para enviarme un mensaje directo o contactarme a través de cualquiera de los siguientes medios.
+              Puedes usar el formulario o escribirme directamente por correo o WhatsApp.
             </p>
 
             <div className="flex flex-col gap-6 mb-10">
-              <a href={`mailto:${siteConfig.links.email}`} className="flex items-start gap-4 p-4 rounded-xl hover:bg-surface/50 transition-colors border border-transparent hover:border-border">
+              <a href={siteConfig.links.email} className="flex items-start gap-4 p-4 rounded-xl hover:bg-surface/50 transition-colors border border-transparent hover:border-border">
                 <div className="p-3 bg-surface border border-border rounded-lg text-accent-cyan">
                   <Mail size={24} />
                 </div>
                 <div>
                   <h4 className="font-semibold text-text-primary">Email</h4>
-                  <p className="text-text-muted">{siteConfig.links.email}</p>
+                  <p className="text-text-muted">{siteConfig.author.email}</p>
                 </div>
               </a>
 
@@ -49,7 +46,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-text-primary">WhatsApp</h4>
-                  <p className="text-text-muted">Mensaje Directo</p>
+                  <p className="text-text-muted">{siteConfig.author.phoneDisplay}</p>
                 </div>
               </a>
               
@@ -59,7 +56,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-text-primary">Ubicación</h4>
-                  <p className="text-text-muted">Disponible para trabajo remoto global</p>
+                  <p className="text-text-muted">{siteConfig.author.location}</p>
                 </div>
               </div>
             </div>
@@ -77,7 +74,7 @@ export default function ContactPage() {
 
           {/* Contact Form */}
           <AnimatedSection direction="up" delay={0.2}>
-            <GlassCard className="p-8">
+            <div className="glass p-8">
               <h3 className="text-2xl font-bold text-text-primary mb-6">Envíame un mensaje</h3>
               <form className="flex flex-col gap-6" action="https://formspree.io/f/example" method="POST">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -119,7 +116,7 @@ export default function ContactPage() {
                   Enviar Mensaje
                 </Button>
               </form>
-            </GlassCard>
+            </div>
           </AnimatedSection>
         </div>
 

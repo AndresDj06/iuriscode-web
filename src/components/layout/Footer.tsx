@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Mail } from 'lucide-react'
 import { LinkedInIcon, GitHubIcon, WhatsAppIcon } from '@/components/ui/SocialIcons'
-import { navigationItems } from '@/config/navigation'
+import { footerItems } from '@/config/navigation'
 import { siteConfig } from '@/config/site'
 
 export function Footer() {
@@ -14,14 +14,13 @@ export function Footer() {
           {/* Brand Column */}
           <div className="flex flex-col gap-4">
             <Link href="/" className="flex items-center gap-1 w-fit" id="footer-logo">
-              <span className="text-2xl font-bold text-text-primary">Iuris</span>
-              <span className="text-2xl font-bold text-accent-cyan">Code</span>
+              <span className="text-2xl font-bold text-text-primary">{siteConfig.name}</span>
             </Link>
             <p className="text-text-muted text-sm max-w-sm">
-              Conectando el rigor del derecho con la innovación de la tecnología para transformar la práctica legal.
+              {siteConfig.author.headline}
             </p>
             <p className="text-accent-violet font-medium text-sm">
-              Derecho + Tecnología
+              {siteConfig.author.location}
             </p>
           </div>
 
@@ -29,7 +28,7 @@ export function Footer() {
           <div className="flex flex-col gap-4">
             <h3 className="text-text-primary font-semibold text-lg tracking-wide">Navegación</h3>
             <ul className="flex flex-col gap-3">
-              {navigationItems.map((item) => (
+              {footerItems.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
@@ -92,10 +91,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-text-muted text-sm">
-            © {currentYear} IurisCode. Todos los derechos reservados.
-          </p>
-          <p className="text-text-muted text-sm flex items-center gap-1">
-            Hecho con pasión por la innovación jurídica
+            © {currentYear} {siteConfig.name}
           </p>
         </div>
       </div>

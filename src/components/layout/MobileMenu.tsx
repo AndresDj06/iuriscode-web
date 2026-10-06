@@ -54,8 +54,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           <div className="flex flex-col h-full" ref={menuRef}>
             <div className="flex items-center justify-between p-4 sm:px-6">
               <Link href="/" className="flex items-center gap-1" onClick={onClose} id="mobile-menu-logo">
-                <span className="text-xl font-bold text-text-primary">Iuris</span>
-                <span className="text-xl font-bold text-accent-cyan">Code</span>
+                <span className="text-xl font-bold text-text-primary">{siteConfig.name}</span>
+                
               </Link>
               <button
                 id="mobile-menu-close"
@@ -70,7 +70,6 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             <nav className="flex-1 px-6 py-8 overflow-y-auto">
               <ul className="flex flex-col gap-6">
                 {navigationItems.map((item) => {
-                  const Icon = item.icon
                   const isActive = pathname === item.href
                   
                   return (
@@ -86,7 +85,6 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                             : "text-text-muted hover:text-text-primary hover:bg-surface/30"
                         )}
                       >
-                        {Icon && <Icon size={24} />}
                         {item.label}
                       </Link>
                     </li>
@@ -96,7 +94,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             </nav>
 
             <div className="p-6 border-t border-border">
-              <p className="text-sm font-medium text-text-muted mb-4">Conecta con nosotros</p>
+              <p className="text-sm font-medium text-text-muted mb-4">Conecta</p>
               <div className="flex gap-4">
                 <a 
                   href={siteConfig.links.linkedin} 

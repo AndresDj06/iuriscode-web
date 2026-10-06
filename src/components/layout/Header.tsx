@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu } from 'lucide-react'
 import { navigationItems } from '@/config/navigation'
+import { siteConfig } from '@/config/site'
 import { cn } from '@/lib/utils'
 import MobileMenu from './MobileMenu'
 
@@ -38,8 +39,8 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-1 z-50" id="header-logo">
-              <span className="text-xl font-bold text-text-primary">Iuris</span>
-              <span className="text-xl font-bold text-accent-cyan">Code</span>
+              <span className="text-xl font-bold text-text-primary">{siteConfig.name}</span>
+              
             </Link>
 
             {/* Desktop Navigation */}
