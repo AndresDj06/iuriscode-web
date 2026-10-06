@@ -1,5 +1,5 @@
-// [PENDIENTE: dominio definitivo en Hostinger]. Defínelo en NEXT_PUBLIC_SITE_URL antes de `npm run build`.
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
+// Dominio público en Hostinger. NEXT_PUBLIC_SITE_URL lo reemplaza si está definida.
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://quilab.co").replace(/\/$/, "");
 
 const email = "frankse1808@gmail.com";
 const whatsappNumber = "573013597813";
