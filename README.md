@@ -71,13 +71,14 @@ Se definen en `.env.local` y se incrustan al compilar: después de cambiarlas, r
 | Variable | Uso |
 |---|---|
 | `NEXT_PUBLIC_SITE_URL` | Dominio público (p. ej. `https://tudominio.com`). Se usa en el sitemap, `robots.txt`, las URL canónicas, Open Graph y JSON-LD. Sin ella, se usa `http://localhost:3000`. |
-| `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | Clave de [Web3Forms](https://web3forms.com) para que el formulario envíe los mensajes a tu correo. Es pública por diseño: solo permite enviarte mensajes a ti. Sin ella, el formulario abre el correo o WhatsApp del visitante. |
+| `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | Opcional. Reemplaza la clave de [Web3Forms](https://web3forms.com) que ya trae `src/config/site.ts` (pública por diseño: solo permite enviarte mensajes a ti). |
 
 ### Formulario de contacto
 
-1. Entra en [web3forms.com](https://web3forms.com), escribe `frankse1808@gmail.com` y pulsa «Create Access Key». La clave llega a ese correo.
-2. Añádela a `.env.local`: `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=tu-clave`.
-3. Reinicia `npm run dev` y envía un mensaje de prueba desde `/contacto/`.
+Ya funciona: la clave de Web3Forms está en `src/config/site.ts` (`contactForm.accessKey`) y los mensajes llegan a `frankse1808@gmail.com`. El correo de quien escribe queda como dirección de respuesta.
+
+- En el panel de Web3Forms, el campo «Website URL» del formulario está en `localhost`. **Cámbialo por el dominio de Hostinger** cuando lo tengas.
+- Para cambiar de clave, edita `site.ts` o define `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` en `.env.local`.
 
 El plan gratuito permite 250 envíos al mes. El formulario incluye un campo trampa contra bots y un tiempo límite de 15 s.
 
