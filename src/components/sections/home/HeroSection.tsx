@@ -1,10 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 import { profileData } from '@/lib/data';
 import { siteConfig } from '@/config/site';
-import Button from '@/components/ui/Button';
+import { ButtonLink } from '@/components/ui/Button';
 
 export default function HeroSection() {
   return (
@@ -23,12 +22,8 @@ export default function HeroSection() {
             {profileData.headline}
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-4">
-            <Link href="/contacto">
-              <Button variant="primary" size="lg">Contáctame</Button>
-            </Link>
-            <a href={siteConfig.links.linkedin} target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" size="lg">Ver mi LinkedIn</Button>
-            </a>
+            <ButtonLink href="/contacto" size="lg" arrow>Contáctame</ButtonLink>
+            <ButtonLink href={siteConfig.links.linkedin} variant="secondary" size="lg">Ver mi LinkedIn</ButtonLink>
           </div>
         </motion.div>
       </div>

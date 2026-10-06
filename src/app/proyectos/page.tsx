@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { projectsData } from "@/lib/data";
-import { AnimatedSection } from "@/components/ui/AnimatedSection";
+import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Badge } from "@/components/ui/Badge";
 
@@ -13,11 +13,11 @@ export default function ProjectsPage() {
   return (
     <div className="pt-24 pb-16">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="mb-16">
-          <SectionHeading title="Proyectos" accentText="PORTAFOLIO" />
-        </AnimatedSection>
+        <Reveal className="mb-16">
+          <SectionHeading title="Proyectos" eyebrow="PORTAFOLIO" />
+        </Reveal>
         {projectsData.map((project) => (
-          <AnimatedSection key={project.title}>
+          <Reveal key={project.title}>
             <article className="glass p-8">
               <Badge>{project.status}</Badge>
               <h2 className="text-2xl font-bold text-text-primary mt-4 mb-3">{project.title}</h2>
@@ -34,7 +34,7 @@ export default function ProjectsPage() {
                 </a>
               )}
             </article>
-          </AnimatedSection>
+          </Reveal>
         ))}
       </div>
     </div>

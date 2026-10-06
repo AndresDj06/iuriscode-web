@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatedSection } from "@/components/ui/AnimatedSection";
+import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Input, Textarea } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
@@ -13,17 +13,17 @@ export default function ContactPage() {
     <div className="pt-24 pb-16 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <AnimatedSection className="mb-16">
+        <Reveal className="mb-16">
           <SectionHeading 
             title="Contacto" 
             subtitle="Escríbeme sobre derechos humanos, investigación jurídica o tecnología."
-            accentText="CONTACTO"
+            eyebrow="CONTACTO"
           />
-        </AnimatedSection>
+        </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20">
           {/* Contact Information */}
-          <AnimatedSection direction="left">
+          <Reveal>
             <h3 className="text-2xl font-bold text-text-primary mb-6">Información de Contacto</h3>
             <p className="text-text-muted mb-8 leading-relaxed">
               Puedes usar el formulario o escribirme directamente por correo o WhatsApp.
@@ -70,10 +70,10 @@ export default function ContactPage() {
                 <GitHubIcon size={24} />
               </a>
             </div>
-          </AnimatedSection>
+          </Reveal>
 
           {/* Contact Form */}
-          <AnimatedSection direction="up" delay={0.2}>
+          <Reveal delay={0.2}>
             <div className="glass p-8">
               <h3 className="text-2xl font-bold text-text-primary mb-6">Envíame un mensaje</h3>
               <form className="flex flex-col gap-6" action="https://formspree.io/f/example" method="POST">
@@ -117,7 +117,7 @@ export default function ContactPage() {
                 </Button>
               </form>
             </div>
-          </AnimatedSection>
+          </Reveal>
         </div>
 
       </div>

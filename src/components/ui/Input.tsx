@@ -1,65 +1,84 @@
-import React, { forwardRef, InputHTMLAttributes, TextareaHTMLAttributes } from 'react';
+'use client';
+
+import { forwardRef, useId, type InputHTMLAttributes, type TextareaHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
+const fieldStyles = cn(
+  'w-full rounded-md border border-line-strong bg-canvas px-3 text-ink placeholder:text-mute',
+  'transition-colors duration-200 hover:border-mute focus-visible:border-accent',
+  'focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-accent',
+  'disabled:cursor-not-allowed disabled:opacity-50',
+);
+
+function Label({ htmlFor, children, required }: { htmlFor: string; children: string; required?: boolean }) {
+  return (
+    <label htmlFor={htmlFor} className="text-sm font-medium text-ink">
+      {children}
+      {required && <span aria-hidden="true" className="text-mute"> *</span>}
+    </label>
+  );
+}
+
+function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null;
+  return <p id={id} className="text-sm text-danger">{message}</p>;
+}
+
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
+  label: string;
   error?: string;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, type = 'text', ...props }, ref) => {
+  ({ className, label, error, id, type = 'text', ...props }, ref) => {
+    const autoId = useId();
+    const fieldId = id ?? autoId;
+    const errorId = `${fieldId}-error`;
     return (
       <div className="flex w-full flex-col gap-1.5">
-        {label && (
-          <label className="text-sm font-medium text-text-muted">
-            {label}
-          </label>
-        )}
+        <Label htmlFor={fieldId} required={props.required}>{label}</Label>
         <input
-          type={type}
-          className={cn(
-            "flex h-11 w-full rounded-lg bg-surface border border-border px-3 py-2 text-text-primary placeholder:text-text-muted/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-cyan/20 focus-visible:border-accent-cyan disabled:cursor-not-allowed disabled:opacity-50 transition-colors",
-            error && "border-red-500 focus-visible:ring-red-500/20 focus-visible:border-red-500",
-            className
-          )}
           ref={ref}
+          id={fieldId}
+          type={type}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : undefined}
+          className={cn(fieldStyles, 'h-11', error && 'border-danger', className)}
           {...props}
         />
-        {error && <span className="text-sm text-red-500">{error}</span>}
+        <FieldError id={errorId} message={error} />
       </div>
     );
-  }
+  },
 );
-Input.displayName = "Input";
+Input.displayName = 'Input';
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label?: string;
+  label: string;
   error?: string;
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, label, error, ...props }, ref) => {
+  ({ className, label, error, id, ...props }, ref) => {
+    const autoId = useId();
+    const fieldId = id ?? autoId;
+    const errorId = `${fieldId}-error`;
     return (
       <div className="flex w-full flex-col gap-1.5">
-        {label && (
-          <label className="text-sm font-medium text-text-muted">
-            {label}
-          </label>
-        )}
+        <Label htmlFor={fieldId} required={props.required}>{label}</Label>
         <textarea
-          className={cn(
-            "flex min-h-[80px] w-full rounded-lg bg-surface border border-border px-3 py-2 text-text-primary placeholder:text-text-muted/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-cyan/20 focus-visible:border-accent-cyan disabled:cursor-not-allowed disabled:opacity-50 transition-colors resize-y",
-            error && "border-red-500 focus-visible:ring-red-500/20 focus-visible:border-red-500",
-            className
-          )}
           ref={ref}
+          id={fieldId}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : undefined}
+          className={cn(fieldStyles, 'min-h-32 resize-y py-2.5', error && 'border-danger', className)}
           {...props}
         />
-        {error && <span className="text-sm text-red-500">{error}</span>}
+        <FieldError id={errorId} message={error} />
       </div>
     );
-  }
+  },
 );
-Textarea.displayName = "Textarea";
+Textarea.displayName = 'Textarea';
 
 export default Input;

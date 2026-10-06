@@ -1,81 +1,175 @@
 @import "tailwindcss";
 
-@theme {
-  --color-primary: #f7f5f0;
-  --color-on-primary: #2b2622;
-  --color-ink: #f7f5f0;
-  --color-body: #c9c0ad;
-  --color-body-strong: #dad2c1;
-  --color-mute: #aea69c;
-  --color-canvas: #2b2622;
-  --color-canvas-soft: #383330;
-  --color-hairline: #3f3a36;
+/* ============================================================
+   Sistema de diseño: fondo blanco, editorial, un solo acento.
+   Acento "azul tinta" #1E3A5F: el color de la firma en un
+   documento y del enlace en la web (≈11:1 sobre blanco).
+   ============================================================ */
 
-  /* Aliases to map our existing Tailwind classes to Warp's palette */
-  --color-accent-cyan: var(--color-primary); 
-  --color-accent-violet: var(--color-body-strong);
-  
+@theme {
+  /* Superficies */
+  --color-canvas: #ffffff;
+  --color-surface: #f6f7f9;
+  --color-line: #e3e6ea;
+  --color-line-strong: #c9ced5;
+
+  /* Texto (contrastes sobre blanco) */
+  --color-ink: #12161c;       /* 18:1 */
+  --color-body: #3a414b;      /* 10:1 */
+  --color-mute: #5f6772;      /* 5.8:1 (AA) */
+
+  /* Acento */
+  --color-accent: #1e3a5f;        /* 11:1 */
+  --color-accent-hover: #142a47;
+  --color-accent-soft: #eaeff5;
+  --color-on-accent: #ffffff;
+
+  /* Estados */
+  --color-danger: #b42318;
+  --color-success: #1f6f43;
+
+  /* Tipografía (variables de next/font en <html>) */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+
+  /* Movimiento */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ---- Alias heredados: se eliminan al migrar todas las páginas ---- */
   --color-background: var(--color-canvas);
-  --color-surface: var(--color-canvas-soft);
-  --color-border: var(--color-hairline);
-  --color-border-hover: var(--color-mute);
-  
+  --color-border: var(--color-line);
+  --color-hairline: var(--color-line);
+  --color-canvas-soft: var(--color-surface);
   --color-text-primary: var(--color-ink);
   --color-text-muted: var(--color-body);
   --color-text-dim: var(--color-mute);
-  
-  --color-error: #EF4444;
-  --color-success: #10B981;
+  --color-accent-cyan: var(--color-accent);
+  --color-accent-violet: var(--color-accent);
+  --color-primary: var(--color-accent);
+  --color-on-primary: var(--color-on-accent);
+  --color-body-strong: var(--color-accent-hover);
 }
 
 @layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
     background-color: var(--color-canvas);
     color: var(--color-body);
-    font-family: "Inter", system-ui, sans-serif;
-    letter-spacing: -0.4px;
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4 {
     color: var(--color-ink);
-    letter-spacing: -1.2px;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 
   ::selection {
-    background-color: var(--color-primary);
-    color: var(--color-on-primary);
+    background-color: var(--color-accent-soft);
+    color: var(--color-ink);
+  }
+
+  /* Foco visible y consistente para teclado */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-@layer utilities {
-  .glass {
-    /* Removing the blur to make it solid and opaque like Warp */
-    background-color: var(--color-canvas-soft);
-    border: 1px solid var(--color-hairline);
-    border-radius: 6px; /* lg border radius */
-    box-shadow: none;
+@layer components {
+  /* Contenedor de página: móvil primero, gutter de 16 px */
+  .container-page {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
   }
-  
-  .glass-hover {
-    transition: all 0.2s ease-in-out;
+  @media (min-width: 640px) {
+    .container-page {
+      padding-inline: 1.5rem;
+    }
   }
-  
-  .glass-hover:hover {
-    border-color: var(--color-mute);
+  @media (min-width: 1024px) {
+    .container-page {
+      padding-inline: 2rem;
+    }
   }
 
-  .text-gradient {
-    /* Removing gradient to favor solid ink typography */
-    color: var(--color-ink);
-    background: none;
-    -webkit-text-fill-color: var(--color-ink);
+  /* Tarjeta sobria: borde fino, elevación mínima al pasar el cursor */
+  .card {
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-line);
+    border-radius: 0.75rem;
+    transition:
+      border-color 200ms var(--ease-out-soft),
+      box-shadow 200ms var(--ease-out-soft),
+      transform 200ms var(--ease-out-soft);
   }
-  
-  .bg-grid {
-    background-size: 40px 40px;
-    background-image: linear-gradient(to right, var(--color-hairline) 1px, transparent 1px),
-                      linear-gradient(to bottom, var(--color-hairline) 1px, transparent 1px);
+  .card-hover:hover {
+    border-color: var(--color-line-strong);
+    box-shadow: 0 6px 20px -12px rgb(18 22 28 / 0.18);
+    transform: translateY(-2px);
+  }
+
+  /* Enlace con subrayado animado */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 250ms var(--ease-out-soft);
+  }
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* Etiqueta superior de sección */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  /* Alias heredado de .glass (se elimina al migrar las páginas) */
+  .glass {
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-line);
+    border-radius: 0.75rem;
   }
 }

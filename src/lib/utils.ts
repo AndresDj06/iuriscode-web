@@ -8,3 +8,10 @@ import { twMerge } from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+/** Compara rutas ignorando la barra final (trailingSlash: true). */
+export function isActivePath(pathname: string, href: string) {
+  const clean = (p: string) => (p.length > 1 ? p.replace(/\/$/, "") : p);
+  const current = clean(pathname);
+  return href === "/" ? current === "/" : current === href || current.startsWith(`${href}/`);
+}
